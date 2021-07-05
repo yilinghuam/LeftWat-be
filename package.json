@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/yilinghuam/LeftWat-be#readme",
   "dependencies": {
-    "mongoose": "^5.13.2"
+    "mongoose": "^5.13.2",
+    "express": "^4.17.1"
   }
 }
