@@ -27,7 +27,7 @@ let connection = null;
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true } )
     .then(connResp => {
         connection = connResp
-        return ClassModel.insertMany(data)
+        return PurchasedItemModel.insertMany(data)
     })
     .then(insertResp => {
         console.log('successful data insertion')

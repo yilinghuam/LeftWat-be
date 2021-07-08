@@ -4,7 +4,6 @@
 require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
-const db = require('./db')
 const itemRouter = require('./routers/purchasedItems_router')
 const userRouter = require('./routers/user_router')
 

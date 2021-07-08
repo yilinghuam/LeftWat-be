@@ -3,7 +3,7 @@ const _ = require('lodash')
 
 const schema = new mongoose.Schema(
     {
-        "userID": {type: String, required: true},
+        "userID": {type: Array, required: true},
         "receiptID": {type: String, require: true, unique: true},
         "itemName": {type: String, required: true},
         "itemCategory": {type: String, required: true},
