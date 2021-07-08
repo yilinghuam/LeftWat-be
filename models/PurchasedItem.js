@@ -1,8 +1,7 @@
 const mongoose = require('mongoose')
-const { Schema } = require('mongoose')
-const lodash = require('lodash')
+const _ = require('lodash')
 
-const itemPurchasedSchema = new Schema(
+const schema = new mongoose.Schema(
     {
         "userID": {type: String, required: true},
         "receiptID": {type: String, require: true, unique: true},
@@ -17,10 +16,14 @@ const itemPurchasedSchema = new Schema(
         "slug": {
             type: String,
             default: function () {
-                return lodash.kebabCase(this.itemName)
+                return _.kebabCase(this.itemName)
             }
         }
     }
 )
 
-module.exports = mongoose.model('ItemPurchased', itemPurchasedSchema)
+const PurchasedItemModel = mongoose.model('ItemPurchased', schema)
+
+module.exports = {
+    PurchasedItemModel
+}

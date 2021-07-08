@@ -1,19 +1,33 @@
 // =======================
 //      DEPENDENCIES
 // =======================
-const { parsed: CONFIGS } = require('dotenv').config()
+require('dotenv').config()
 const express = require('express')
-require('express-async-errors')
+const mongoose = require('mongoose')
 const db = require('./db')
-const appRouter = require('./routers')
+const itemRouter = require('./routers/purchasedItems_router')
+const userRouter = require('./routers/user_router')
 
 // =======================
 //      HOST
 // =======================
 const app = express()
-const { PORT, DB_URI } = CONFIGS
+const port = process.env.PORT || 3000
+const mongoURI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}/${process.env.DB_NAME}`
 
-db.connect(DB_URI, async () => {
-    await app.listen(PORT)
-    console.log(`LeftWat backend app started on port: ${PORT}`)
-})
+mongoose.set('useFindAndModify', false)
+mongoose.set('useCreateIndex', true)
+
+// setting middleware to accept json and urlencoded request body
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
+app.use('/api/v1/item', itemRouter)
+app.use('/api/v1/users', userRouter)
+
+mongoose.connect( mongoURI, { useNewUrlParser: true, useUnifiedTopology: true } )
+  .then(response => {
+    app.listen(port, () => {
+      console.log(`Animal Shelter app listening on port: ${port}`)
+    })
+  })

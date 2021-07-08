@@ -1,8 +1,8 @@
-const { Router } = require('express')
-const router = new Router()
+const express = require('express')
+const router = express.Router()
 const purchasedItemController = require('../controllers/purchasedItems_controller')
 
 //index route
-router.get('/left-wat', purchasedItemController.index)
+router.get('/', purchasedItemController.index)
 
 module.exports = router
