@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const { PurchasedItemModel } = require('../models/PurchasedItem')
+const { PurchasedItemModel } = require('../models/purchasedItem')
 
 module.exports = {
 

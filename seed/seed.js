@@ -30,7 +30,7 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true } )
         return PurchasedItemModel.insertMany(data)
     })
     .then(insertResp => {
-        console.log('successful data insertion')
+        console.log('successful item data insertion')
     })
     .catch(err => {
         console.log(err)
