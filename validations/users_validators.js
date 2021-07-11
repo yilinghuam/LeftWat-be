@@ -10,5 +10,13 @@ module.exports = {
             .required(),
         confirm_password: Joi.string()
             .required()
+    }),
+
+    loginValidator: Joi.object({
+        email: Joi.string()
+            .email()
+            .required(),
+        password: Joi.string()
+            .required()
     })
 }
