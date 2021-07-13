@@ -37,7 +37,7 @@ module.exports = {
         // const file_path = './public/redmart-sample.pdf'
 
         // path for upload feature for user (POSTMAN)
-        const file_path = req.file.path
+        const file_path = await req.file.path
 
         // 2. Click UPLOAD button
         // 2a) Run OCR API and return json data
@@ -47,7 +47,8 @@ module.exports = {
         // let response = veryfi_client.process_document(file_path, [], true)
 
         // run upload feature for user (POSTMAN) (+ delete file from veryfi inbox)
-        let response = veryfi_client.process_document(file_path, [], true)
+        // process_document() for local files
+        let response = veryfi_client.process_document_url(file_path, [], true)
 
         response.then(resp => {
             
@@ -91,7 +92,8 @@ module.exports = {
             return
             
         }).catch(err => {
-            console.log('Gaby, error with Veryfi integration')
+            // console.log('Gaby, error with Veryfi integration')
+            console.log(err)
             return
         })
         
