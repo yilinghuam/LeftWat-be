@@ -4,6 +4,7 @@
 require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
+const cors = require('cors')
 const itemRouter = require('./routers/purchasedItems_router')
 const userRouter = require('./routers/user_router')
 
@@ -16,6 +17,11 @@ const mongoURI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${
 
 mongoose.set('useFindAndModify', false)
 mongoose.set('useCreateIndex', true)
+
+//setting cors middleware
+app.use(cors({ origin: '*' }))
+//handling cors pre-flight requests across-the-board
+app.options('*', cors())
 
 // setting middleware to accept json and urlencoded request body
 app.use(express.json())
