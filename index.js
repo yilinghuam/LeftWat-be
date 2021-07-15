@@ -5,6 +5,7 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
 const itemRouter = require('./routers/purchasedItems_router')
 const userRouter = require('./routers/user_router')
 
@@ -22,6 +23,9 @@ mongoose.set('useCreateIndex', true)
 app.use(cors({ origin: '*' }))
 //handling cors pre-flight requests across-the-board
 app.options('*', cors())
+
+//setting cookie-parser middleware
+app.use(cookieParser())
 
 // setting middleware to accept json and urlencoded request body
 app.use(express.json())
