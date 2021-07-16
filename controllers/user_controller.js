@@ -131,7 +131,7 @@ module.exports = {
         let expiresAt = moment().add(1, 'day').toString()
 
         //generate JWT and return as response
-        let token = jwt.sign(
+        const token = jwt.sign(
             {
                 email: user.email
             },
@@ -141,11 +141,42 @@ module.exports = {
             }
         )
 
-        res.json({
-            token: token,
-            expiresAt: expiresAt
-        })
+        //store jwt in cookie called "access_token"
+        return res
+            .cookie('access_token', token, {
+                httpOnly: true,
+                secure: false,
+            })
+            .status(200) //success
+            .json({
+                message: 'Logged in succesfully!', 
+                token, 
+                expiresAt
+            })
 
+    },
+
+    dashboard: async (req, res) => {
+        //get user info     
+        try {
+            userInfo = await UserModel.findOne({ email: req.email })
+
+            return res.json({ 
+                success: true,
+                message: 'User found',
+                userInfo,
+            })
+        } catch (err) {
+            res.status(500) //internal server error
+            return res.json(err)
+        }
+    },
+
+    logout: (req, res) => {
+        return res
+            .clearCookie('access_token')
+            .status(200) //success
+            .json({ message: 'Logged out successfully!' })
     }
 
 }
