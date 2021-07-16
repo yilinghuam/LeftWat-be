@@ -156,6 +156,22 @@ module.exports = {
 
     },
 
+    dashboard: async (req, res) => {
+        //get user info     
+        try {
+            userInfo = await UserModel.findOne({ email: req.email })
+
+            return res.json({ 
+                success: true,
+                message: 'User found',
+                userInfo,
+            })
+        } catch (err) {
+            res.status(500) //internal server error
+            return res.json(err)
+        }
+    },
+
     logout: (req, res) => {
         return res
             .clearCookie('access_token')
