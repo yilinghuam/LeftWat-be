@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const randomstring = require('randomstring')
 const { itemModel } = require('../models/Item')
 const Client = require('@veryfi/veryfi-sdk')
+const { userModel } = require('../models/User')
 
 const timestampNow = moment().utc()
 
@@ -21,7 +22,7 @@ module.exports = {
     },
 
     uploadReceipt: async (req, res) => {
-        
+
         // setting up OCR API access
         const client_id = process.env.CLIENT_ID
         const client_secret = process.env.CLIENT_SECRET
@@ -51,28 +52,21 @@ module.exports = {
 
         // run upload feature for user (POSTMAN) (+ delete file from veryfi inbox)
         // process_document() for local files
-        let response = veryfi_client.process_document_url(file_path, [], true)
 
-        response.then(resp => {
+        let response = await veryfi_client.process_document_url(file_path, [], true)
+
+        try {
             
-            let purchasedItem = resp.line_items
-
-            // function cleanName(string) {
-            //     return string.slice(0,-8)
-            // }
+            let purchasedItem = response.line_items
 
             for (let i = 0; i < purchasedItem.length; i++) {
                 // console.log(purchasedItem[i])
+                // console.log(purchasedItem.length)
 
                 // 2b) Save json data to MongoDB
-                // const timestampNow = moment().utc()
-
-                // every upload item will be a standalone document i.e. all repeat purchases will not be aggregated but unique documents
-                itemModel.create({
-                    userID: [ randomstring.generate({ // why do we need this to be array? unless we can upload by itemName then it makes sense to append users to a single item
-                        length: 8,
-                        charset: 'alphabetic'
-                    }) ], // placeholder pending integration with user database
+                
+                const item = itemModel.create({
+                    userID: [ req.email ,'public' ],
                     receiptID: moment(timestampNow).format('YYYYMMDD') + '-' + randomstring.generate(5),                    
                     itemName: purchasedItem[i].description,
                     itemCategory: 'Others',
@@ -83,50 +77,81 @@ module.exports = {
                     deletedByUser: false,
                     slug: _.kebabCase(purchasedItem[i].description)
                 })
-                    .then(uploadResp => {
-                        console.log('Uploaded to MongoDB successfully!')
-                        return
-                    })
-                    .catch(err => {
-                        console.log('Error with MongoDB integration')
-                        console.log(err)
-                        return
-                    })
 
-                // THIS ALLOWS ME TO PUSH BY ITEM NAME
-                // itemModel.updateOne(
-                //     { itemName: purchasedItem[i].description },
-                //     {
-                //         $push: {
-                //             itemQuantity: purchasedItem[i].quantity,
-                //             itemPrice: purchasedItem[i].price,
-                //             slug: _.kebabCase(purchasedItem[i].description)
-                //         },
-                //         $set: { 
-                //             updated_at: timestampNow
-                //         }
-                //     },
-                //     {
-                //         upsert: true,
-                //     }
-                // )
-                //     .then(uploadResp => {
-                //         console.log('Uploaded to MongoDB successfully!')
-                //         return
-                //     })
-                //     .catch(err => {
-                //         console.log('Gaby, error with MongoDB integration')
-                //         return
-                //     })
+                console.log('Successful MongoDB insertion!')
             }
 
-            return
-            
-        }).catch(err => {
-            console.log('Error with Veryfi integration')
+        } catch (err) {
             console.log(err)
             return
-        })
+        }
+
+        // let response = veryfi_client.process_document_url(file_path, [], true)
+        // console.log('response')
+        // response.then(resp => {
+            
+        //     let purchasedItem = resp.line_items
+
+        //     // function cleanName(string) {
+        //     //     return string.slice(0,-8)
+        //     // }
+
+        //     for (let i = 0; i < purchasedItem.length; i++) {
+        //         // console.log(purchasedItem[i])
+        //         console.log(purchasedItem.length)
+        //         // 2b) Save json data to MongoDB
+        //         // const timestampNow = moment().utc()
+
+        //         // every upload item will be a standalone document i.e. all repeat purchases will not be aggregated but unique documents
+        //         itemModel.create({
+        //             userID: [ req.email ,'public' ],
+        //             receiptID: moment(timestampNow).format('YYYYMMDD') + '-' + randomstring.generate(5),                    
+        //             itemName: purchasedItem[i].description,
+        //             itemCategory: 'Others',
+        //             itemPrice: purchasedItem[i].price,
+        //             itemPriceTotal: purchasedItem[i].total,
+        //             itemQuantityAtUpload: purchasedItem[i].quantity,
+        //             itemQuantityUpdatedByUser: purchasedItem[i].quantity,
+        //             deletedByUser: false,
+        //             slug: _.kebabCase(purchasedItem[i].description)
+        //         })
+        //             .then(uploadResp => {
+        //                 return `Uploaded to MongoDB successfully!`
+        //             })
+        //             .catch(err => {
+        //                 console.log('Error with MongoDB integration')
+        //                 console.log(err)
+        //                 return
+        //             })
+
+        //     }
+        //     return `done`
+            
+        // }).catch(err => {
+        //     console.log('Error with Veryfi integration')
+        //     console.log(err)
+        //     return
+        //     })
+        //     console.log('2')
+
+        userModel.updateOne(
+            { email: req.email },
+            {
+                $push: { 
+                    cloudinaryReceipts: file_path
+                },
+                $set: {
+                    updated_at: timestampNow
+                }
+            }
+        )
+            .then(pushCloudinaryResp => {
+                return
+            })
+            .catch(err => {
+                console.log(err)
+                return
+            })
         
     },
 

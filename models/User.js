@@ -1,15 +1,15 @@
 const mongoose = require('mongoose')
 
-const schema = new mongoose.Schema(
+const userSchema = new mongoose.Schema(
     {
-        "email": {type: String, required: true, unique: true},
-        "hashedValue": {type: String, required: true, unique: true},
-    }, 
-    {timestamps: true}
+        "email": { type: String, required: true, unique: true }, // userID
+        "hashedValue": { type: String, required: true, unique: true },
+        "cloudinaryReceipts": { type: Array },
+    }, { timestamps: true }
 )
 
-const UserModel = mongoose.model('User', schema)
+const userModel = mongoose.model('user', userSchema)
 
 module.exports = {
-    UserModel
-}
+    userModel
+} 

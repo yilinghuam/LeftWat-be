@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const { UserModel } = require('../models/user')
+const { userModel } = require('../models/User')
 const { registerValidator, loginValidator } = require('../validations/users_validators')
 const bcrypt = require('bcrypt')
 const moment = require('moment')
@@ -48,7 +48,7 @@ module.exports = {
         let user = null
 
         try {
-            user = await UserModel.findOne({ email: validatedParams.email })
+            user = await userModel.findOne({ email: validatedParams.email })
         } catch (err) {
             res.statusCode = 500 //interal server error
             console.log(err)
@@ -65,7 +65,7 @@ module.exports = {
 
         //create new user in database
         try {
-            await UserModel.create({
+            await userModel.create({
                 email: validatedParams.email,
                 hashedValue: hash
             }) 
@@ -96,7 +96,7 @@ module.exports = {
         let user = null
 
         try {
-            user = await UserModel.findOne({ email: validatedParams.email })
+            user = await userModel.findOne({ email: validatedParams.email })
         } catch (err) {
             res.statusCode = 500 //interal server error
             return res.json(err)
@@ -159,7 +159,7 @@ module.exports = {
     dashboard: async (req, res) => {
         //get user info     
         try {
-            userInfo = await UserModel.findOne({ email: req.email })
+            userInfo = await userModel.findOne({ email: req.email })
 
             return res.json({ 
                 success: true,
