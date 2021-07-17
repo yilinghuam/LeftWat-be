@@ -16,7 +16,7 @@ const itemSchema = new mongoose.Schema({
     itemQuantityUpdatedByUser: { type: Number, required: true },
     deletedByUser: { type: Boolean, default: false },
     slug: { type: String },
-    }, { timestamps: { createdAt: true, updatedAt: false } })
+    }, { timestamps: { createdAt: true, updatedAt: true } })
 
 const itemModel = mongoose.model('item', itemSchema)
 

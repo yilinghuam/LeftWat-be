@@ -5,6 +5,9 @@ const cloudinary = require('cloudinary').v2
 const { CloudinaryStorage } = require('multer-storage-cloudinary')
 const multer = require('multer')
 const itemController = require('../controllers/purchasedItems_controller')
+const { 
+    authenticatedOnly : authenticatedOnlyMiddleware 
+} = require('../middlewares/auth_middlewares')
 
 // --> MULTER ROUTE FOR LOCAL STORAGE
 // let storage = multer.diskStorage({
@@ -44,9 +47,9 @@ router.get('/', itemController.index)
 // --> MULTER ROUTE FOR LOCAL STORAGE
 // router.post('/upload', upload.single('testReceipt'), itemController.uploadReceipt)
 // --> MULTER-STORAGE-CLOUDINARY ROUTE FOR CLOUDINARY STORAGE
-router.post('/upload', uploadReceiptParser.single('testReceipt'), itemController.uploadReceipt)
+router.post('/upload', authenticatedOnlyMiddleware, uploadReceiptParser.single('receipt'), itemController.uploadReceipt)
 
 // confirm receipt route
-router.post('/upload/confirm', itemController.confirmReceipt)
+router.post('/upload/confirm', authenticatedOnlyMiddleware, itemController.confirmReceipt)
 
 module.exports = router
