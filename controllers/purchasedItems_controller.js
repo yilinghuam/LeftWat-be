@@ -62,9 +62,6 @@ module.exports = {
             let receiptID = moment(timestampNow).format('YYYYMMDD') + '-' + randomstring.generate(5)
 
             for (let i = 0; i < purchasedItem.length; i++) {
-                // console.log(purchasedItem[i])
-                // console.log(purchasedItem.length)
-
                 // 2b) Save json data to MongoDB
                 
                 const item = itemModel.create({
@@ -83,61 +80,14 @@ module.exports = {
                 console.log('Successful MongoDB insertion!')
             }
 
-            res.json( { message: 'Doneded!' } )
+            res.json({ message: "uploaded!" })
 
         } catch (err) {
             console.log(err)
             return
         }
 
-        // let response = veryfi_client.process_document_url(file_path, [], true)
-        // console.log('response')
-        // response.then(resp => {
-            
-        //     let purchasedItem = resp.line_items
-
-        //     // function cleanName(string) {
-        //     //     return string.slice(0,-8)
-        //     // }
-
-        //     for (let i = 0; i < purchasedItem.length; i++) {
-        //         // console.log(purchasedItem[i])
-        //         console.log(purchasedItem.length)
-        //         // 2b) Save json data to MongoDB
-        //         // const timestampNow = moment().utc()
-
-        //         // every upload item will be a standalone document i.e. all repeat purchases will not be aggregated but unique documents
-        //         itemModel.create({
-        //             userID: [ req.email ,'public' ],
-        //             receiptID: moment(timestampNow).format('YYYYMMDD') + '-' + randomstring.generate(5),                    
-        //             itemName: purchasedItem[i].description,
-        //             itemCategory: 'Others',
-        //             itemPrice: purchasedItem[i].price,
-        //             itemPriceTotal: purchasedItem[i].total,
-        //             itemQuantityAtUpload: purchasedItem[i].quantity,
-        //             itemQuantityUpdatedByUser: purchasedItem[i].quantity,
-        //             deletedByUser: false,
-        //             slug: _.kebabCase(purchasedItem[i].description)
-        //         })
-        //             .then(uploadResp => {
-        //                 return `Uploaded to MongoDB successfully!`
-        //             })
-        //             .catch(err => {
-        //                 console.log('Error with MongoDB integration')
-        //                 console.log(err)
-        //                 return
-        //             })
-
-        //     }
-        //     return `done`
-            
-        // }).catch(err => {
-        //     console.log('Error with Veryfi integration')
-        //     console.log(err)
-        //     return
-        //     })
-        //     console.log('2')
-
+        //add cloudinary link to user
         userModel.updateOne(
             { email: req.email },
             {
