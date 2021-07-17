@@ -59,12 +59,14 @@ module.exports = {
             
             let purchasedItem = response.line_items
 
+            let receiptID = moment(timestampNow).format('YYYYMMDD') + '-' + randomstring.generate(5)
+
             for (let i = 0; i < purchasedItem.length; i++) {
                 // 2b) Save json data to MongoDB
                 
                 const item = itemModel.create({
                     userID: [ req.email ,'public' ],
-                    receiptID: moment(timestampNow).format('YYYYMMDD') + '-' + randomstring.generate(5),                    
+                    receiptID: receiptID,                    
                     itemName: purchasedItem[i].description,
                     itemCategory: 'Others',
                     itemPrice: purchasedItem[i].price,
