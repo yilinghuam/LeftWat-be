@@ -6,9 +6,10 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
-const itemRouter = require('./routers/purchasedItems_router')
-const userRouter = require('./routers/user_router')
+const uploadRouter = require('./routers/upload_router')
+const landingRouter = require('./routers/landing_router')
 const inventoryRouter = require('./routers/inventory_router')
+const dashboardRouter = require('./routers/dashboard_router')
 
 // =======================
 //      HOST
@@ -32,9 +33,10 @@ app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.use('/api/v1/item', itemRouter)
-app.use('/api/v1/user', userRouter)
+app.use('/api/v1/upload', uploadRouter)
+app.use('/api/v1/landing', landingRouter)
 app.use('/api/v1/inventory',inventoryRouter)
+app.use('/api/v1/dashboard',dashboardRouter)
 
 mongoose.connect( mongoURI, { useNewUrlParser: true, useUnifiedTopology: true } )
   .then(response => {

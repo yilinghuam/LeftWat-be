@@ -11,15 +11,16 @@ const timestampNow = moment().utc()
 
 module.exports = {
 
-    index: async (req, res) => {
-        try {
-            let items = await itemModel.find()
-            return res.json(items)
-        } catch (err) {
-            res.statusCode = 500
-            return res.json(err)
-        }
-    },
+    // no purpose in this
+    // index: async (req, res) => {
+    //     try {
+    //         let items = await itemModel.find()
+    //         return res.json(items)
+    //     } catch (err) {
+    //         res.statusCode = 500
+    //         return res.json(err)
+    //     }
+    // },
 
     uploadReceipt: async (req, res) => {
 

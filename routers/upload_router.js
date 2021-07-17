@@ -4,7 +4,7 @@ const router = express.Router()
 const cloudinary = require('cloudinary').v2
 const { CloudinaryStorage } = require('multer-storage-cloudinary')
 const multer = require('multer')
-const itemController = require('../controllers/purchasedItems_controller')
+const uploadController = require('../controllers/upload_controller')
 const { 
     authenticatedOnly : authenticatedOnlyMiddleware 
 } = require('../middlewares/auth_middlewares')
@@ -40,16 +40,16 @@ cloudinary.config({
 // ==============================
 //            ROUTES
 // ==============================
-//index route
-router.get('/', itemController.index)
+//index route (nopoint)
+// router.get('/', uploadController.index)
 
 // upload receipt route
 // --> MULTER ROUTE FOR LOCAL STORAGE
 // router.post('/upload', upload.single('testReceipt'), itemController.uploadReceipt)
 // --> MULTER-STORAGE-CLOUDINARY ROUTE FOR CLOUDINARY STORAGE
-router.post('/upload', authenticatedOnlyMiddleware, uploadReceiptParser.single('receipt'), itemController.uploadReceipt)
+router.post('/upload', authenticatedOnlyMiddleware, uploadReceiptParser.single('receipt'), uploadController.uploadReceipt)
 
 // confirm receipt route
-router.post('/upload/confirm', authenticatedOnlyMiddleware, itemController.confirmReceipt)
+router.post('/upload/confirm', authenticatedOnlyMiddleware, uploadController.confirmReceipt)
 
 module.exports = router
