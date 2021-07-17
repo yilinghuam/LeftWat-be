@@ -56,17 +56,20 @@ module.exports = {
 
         let response = await veryfi_client.process_document_url(file_path, [], true)
 
+        let receiptID = moment(timestampNow).format('YYYYMMDD') + '-' + randomstring.generate(5)
+
         try {
             
             let purchasedItem = response.line_items
-
-            let receiptID = moment(timestampNow).format('YYYYMMDD') + '-' + randomstring.generate(5)
 
             for (let i = 0; i < purchasedItem.length; i++) {
                 // 2b) Save json data to MongoDB
                 
                 const item = itemModel.create({
-                    userID: [ req.email ,'public' ],
+                    userID: {
+                        email: req.email,
+                        profileType: 'public' 
+                        },
                     receiptID: receiptID,                    
                     itemName: purchasedItem[i].description,
                     itemCategory: 'Others',
@@ -75,7 +78,8 @@ module.exports = {
                     itemQuantityAtUpload: purchasedItem[i].quantity,
                     itemQuantityUpdatedByUser: purchasedItem[i].quantity,
                     deletedByUser: false,
-                    slug: _.kebabCase(purchasedItem[i].description)
+                    slug: _.kebabCase(purchasedItem[i].description),
+                    cloudinaryLink: file_path
                 })
 
                 console.log('Successful MongoDB insertion!')
@@ -93,7 +97,8 @@ module.exports = {
             { email: req.email },
             {
                 $push: { 
-                    cloudinaryReceipts: file_path
+                    cloudinaryReceipts: file_path,
+                    receiptArray: receiptID
                 },
                 $set: {
                     updated_at: timestampNow
