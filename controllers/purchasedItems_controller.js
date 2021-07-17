@@ -81,6 +81,8 @@ module.exports = {
                 console.log('Successful MongoDB insertion!')
             }
 
+            res.json({ message: "uploaded!" })
+
         } catch (err) {
             console.log(err)
             return
