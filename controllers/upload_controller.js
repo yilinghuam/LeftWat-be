@@ -11,17 +11,6 @@ const timestampNow = moment().utc()
 
 module.exports = {
 
-    // no purpose in this
-    // index: async (req, res) => {
-    //     try {
-    //         let items = await itemModel.find()
-    //         return res.json(items)
-    //     } catch (err) {
-    //         res.statusCode = 500
-    //         return res.json(err)
-    //     }
-    // },
-
     uploadReceipt: async (req, res) => {
 
         // setting up OCR API access
@@ -115,12 +104,89 @@ module.exports = {
         
     },
 
+    loadReceipt: async (req,res) => {
+        
+        try {
+
+            let userIdentified = await userModel.findOne({ email: req.email })
+            console.log(userIdentified)
+            let latestReceiptIndex = userIdentified.receiptArray.length
+            let latestReceiptID = userIdentified.receiptArray[latestReceiptIndex - 1]
+            console.log(latestReceiptID)
+
+            const receiptData = await itemModel.find(
+                {
+                    receiptID: latestReceiptID
+                }
+            )
+
+            console.log(receiptData)
+            return res.send(receiptData)
+
+        } catch(err) {
+            console.log(err)
+            res.statusCode = 400
+            return res.json(err)
+        }
+
+    },
+
     confirmReceipt: async (req, res) => {
 
-        // OVERVIEW OF PROCESS LOGIC:
-        // 1. Load mongoDB data in table
-        // 2. Editable: name, quantity, price
-        // 3. Click confirm button at bottom of table to push changes into mongoDB
+        // add filter based on user ID
+
+        // let requestData = req.body.headers.itemChangeState
+        // let changedData = Object.keys(requestData) 
+
+        // for (let i = 0; i < changedData.length; i++) {
+        //     let changedItem = changedData[i]
+
+        //     const originalData = await itemModel.findOne({slug:changedItem})
+
+        //     let changedItemCategory = originalData.itemCategory
+        //     let changedItemQuantity = originalData.itemQuantityUpdatedByUser
+        //     let changedDeleted = originalData.deletedByUser
+
+        //     const changedDataKeys = Object.keys(requestData[changedItem])
+            
+        //     if(changedDataKeys.includes('itemCategory')) {
+        //         changedItemCategory = exampleData[changedItem].itemCategory
+        //     }
+        //     if(changedDataKeys.includes('itemQuantityUpdatedByUser')) {
+        //         changedItemQuantity = exampleData[changedItem].itemQuantityUpdatedByUser
+        //     }
+        //     if(changedDataKeys.includes('deletedByUser')) {
+        //         changedDeleted = exampleData[changedItem].deletedByUser
+        //     }
+
+        //     try {
+        //         const updatedProduct = await itemModel.findOneAndUpdate(
+        //             {slug:changedItem}, 
+        //             {itemCategory: changedItemCategory,
+        //             itemQuantityUpdatedByUser: changedItemQuantity,
+        //             deletedByUser: changedDeleted
+        //             },
+        //             {options: {
+        //                 new:true
+        //             }})
+        //         console.log(updatedProduct)
+        //     } catch (error) {
+        //         console.log(error)
+        //     }
+
+        //     {
+        //         apple: {
+        //             itemPriceTotal: 24, 
+        //             itemPrice: “2”
+        //             }
+        //         chips: {
+        //             itemPriceTotal: 8, 
+        //             itemQuantityUpdatedByUser: “4"
+        //             }
+        //     }
+        //     basically, three possible changes, itemPriceTotal, itemPrice and itemQuantityUpdatedByUser.
+        //     itemPriceTotal will always change cause changing any of the other two will always affect total price
+        // }
 
     },
 }
