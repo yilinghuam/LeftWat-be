@@ -43,13 +43,16 @@ cloudinary.config({
 //index route (nopoint)
 // router.get('/', uploadController.index)
 
-// upload receipt route
+// upload route to save receipt to Cloudinary, parse through Veryfi OCR, and save json data to mongoDB
 // --> MULTER ROUTE FOR LOCAL STORAGE
 // router.post('/upload', upload.single('testReceipt'), itemController.uploadReceipt)
 // --> MULTER-STORAGE-CLOUDINARY ROUTE FOR CLOUDINARY STORAGE
 router.post('/', authenticatedOnlyMiddleware, uploadReceiptParser.single('receipt'), uploadController.uploadReceipt)
 
-// confirm receipt route
+// get route to retrieve data for user to edit and confirm
+router.get('/confirm', authenticatedOnlyMiddleware, uploadController.loadReceipt)
+
+// confirm route to push edits to mongoDB
 router.post('/confirm', authenticatedOnlyMiddleware, uploadController.confirmReceipt)
 
 module.exports = router
