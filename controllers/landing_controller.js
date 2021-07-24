@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const { userModel } = require('../models/User')
-const { registerValidator, loginValidator } = require('../validations/users_validators')
+const { registerValidator, loginValidator } = require('../validations/landing_validators')
 const bcrypt = require('bcrypt')
 const moment = require('moment')
 const jwt = require('jsonwebtoken')
@@ -18,7 +18,7 @@ module.exports = {
 
         const validatedParams = validationResult.value
 
-        //ensure confirm password matched confirm password
+        //ensure confirm password matches password
         if (validatedParams.password !== validatedParams.confirm_password) {
             res.statusCode = 400 //bad request
             return res.json({
@@ -28,7 +28,6 @@ module.exports = {
         }
 
         //hash password using bcrypt
-
         let hash = ''
 
         try {
@@ -99,12 +98,8 @@ module.exports = {
             user = await userModel.findOne({ email: validatedParams.email })
         } catch (err) {
             res.statusCode = 500 //interal server error
-            return res.json(err)
-        }
-
-        if(!user) {
-            res.statusCode = 400 //bad request
             return res.json({
+                err, 
                 success: false, 
                 message: 'Given email or password is incorrect'
             })
@@ -154,22 +149,6 @@ module.exports = {
                 expiresAt
             })
 
-    },
-
-    dashboard: async (req, res) => {
-        //get user info     
-        try {
-            userInfo = await userModel.findOne({ email: req.email })
-
-            return res.json({ 
-                success: true,
-                message: 'User found',
-                userInfo,
-            })
-        } catch (err) {
-            res.status(500) //internal server error
-            return res.json(err)
-        }
     },
 
     logout: (req, res) => {
