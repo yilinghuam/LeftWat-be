@@ -1,24 +1,52 @@
 const mongoose = require('mongoose')
 const { userModel } = require('../models/User')
+const { itemModel } = require('../models/Item')
 const { changePasswordValidator } = require('../validations/dashboard_validators')
 const bcrypt = require('bcrypt')
 const moment = require('moment')
 const jwt = require('jsonwebtoken')
 
+
 module.exports = {
-    dashboard: async (req, res) => {
-        //get user info     
+    userData: async (req, res) => {
+          
         try {
-            userInfo = await userModel.findOne({ email: req.email })
+            //get user info
+            userInfo = await userModel.findOne({ 'email': req.email })
+
+            //get user's receipts and cloudinary links
+            userReceiptIDs = userInfo.receiptArray
+            userCloudinaryLinks = userInfo.cloudinaryReceipts
+
+            //array of objects to store info of last 5 receipts
+            let displayLastFiveReceipts = [ 
+                { receiptID: '', cloudinaryURL: '' },
+                { receiptID: '', cloudinaryURL: '' },
+                { receiptID: '', cloudinaryURL: '' },
+                { receiptID: '', cloudinaryURL: '' },
+                { receiptID: '', cloudinaryURL: '' },
+            ]
+            
+            //only show last 5 receipts, starting from last one
+            let displayPosition = 0
+
+            for (let receiptPosition = userReceiptIDs.length - 1; receiptPosition > userReceiptIDs.length - 6; receiptPosition--) {
+
+                displayLastFiveReceipts[displayPosition].receiptID = userReceiptIDs[receiptPosition]
+                displayLastFiveReceipts[displayPosition].cloudinaryURL = userCloudinaryLinks[receiptPosition]
+
+                displayPosition++
+            }
 
             return res.json({ 
                 success: true,
                 message: 'User found',
                 userInfo,
+                displayLastFiveReceipts,
             })
         } catch (err) {
             res.status(500) //internal server error
-            return res.json(err)
+            res.json(err)
         }
     },
 
@@ -62,7 +90,7 @@ module.exports = {
 
         //update new password in database
         try {
-            userInfo = await userModel.updateOne(
+            await userModel.updateOne(
                 { email: req.email },
                 {
                     $set: {
@@ -82,6 +110,45 @@ module.exports = {
         }
     },
 
+    deleteReceipt: async (req, res) => {
 
+        //delete all items of receipt
+        try {
+            await itemModel.deleteMany({ receiptID: req.body.receiptID })
 
+        } catch (err) {
+            res.status(500) //internal server error
+            res.json(err)
+        }
+
+        //delete from user's receiptArray
+        try {
+            user = await userModel.findOne({ email: req.email })
+
+            userReceipts = user.receiptArray
+
+            //delete receiptID from receiptArray
+            for (let receiptIndex = 0; receiptIndex < userReceipts.length; receiptIndex++) {
+                if(userReceipts[receiptIndex] === req.body.receiptID ) {
+                    userReceipts.splice(receiptIndex, 1)
+                }   
+            }
+
+            await userModel.updateOne(
+                { email: req.email },
+                {
+                    $set: {
+                        receiptArray: userReceipts
+                    }
+                }
+            )
+
+            res.json({
+                message: 'receipt deleted from user\'s receiptArray',
+                userReceipts
+            })
+        } catch (err) {
+            res.status(500) //internal server error
+        }
+    },
 }
