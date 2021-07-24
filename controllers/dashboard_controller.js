@@ -77,9 +77,11 @@ module.exports = {
             })
         } catch (err) {
             console.log(err)
-            status = 500 //internal server error
+            res.status = 500 //internal server error
             res.json(err)
         }
     },
+
+
 
 }
