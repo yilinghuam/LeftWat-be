@@ -27,23 +27,48 @@ module.exports = {
 
     },
     update: async(req,res) => {
-        let changedData = req.headers.itemChangeState
-        let exampleData = {
-            milk: {
-                itemCategory: 'Vegetable',
-                itemQuantityUpdatedByUser: '3'
-            },
-            spinach: {
-                itemCategory:'Meat',
-                deletedByUser: false
-            }
-        }
-        let changedDateKeys = Object.keys(changedData) 
 
-        try {
-            const updatedProduct = await itemModel.update()
-        } catch (error) {
+        // add filter based on user ID
+
+        let requestData = req.body.headers.itemChangeState
+        let changedData = Object.keys(requestData) 
+
+        for (let i = 0; i < changedData.length; i++) {
+            let changedItem = changedData[i]
+
+            const originalData = await itemModel.findOne({slug:changedItem})
+
+            let changedItemCategory = originalData.itemCategory
+            let changedItemQuantity = originalData.itemQuantityUpdatedByUser
+            let changedDeleted = originalData.deletedByUser
+
+            const changedDataKeys = Object.keys(requestData[changedItem])
             
+            if(changedDataKeys.includes('itemCategory')) {
+                changedItemCategory = exampleData[changedItem].itemCategory
+            }
+            if(changedDataKeys.includes('itemQuantityUpdatedByUser')) {
+                changedItemQuantity = exampleData[changedItem].itemQuantityUpdatedByUser
+            }
+            if(changedDataKeys.includes('deletedByUser')) {
+                changedDeleted = exampleData[changedItem].deletedByUser
+            }
+
+            try {
+                const updatedProduct = await itemModel.findOneAndUpdate(
+                    {slug:changedItem}, 
+                    {itemCategory: changedItemCategory,
+                    itemQuantityUpdatedByUser: changedItemQuantity,
+                    deletedByUser: changedDeleted
+                    },
+                    {options: {
+                        new:true
+                    }})
+                console.log(updatedProduct)
+            } catch (error) {
+                console.log(error)
+            }       
         }
+  
     }
 }
