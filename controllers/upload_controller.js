@@ -109,10 +109,10 @@ module.exports = {
         try {
 
             let userIdentified = await userModel.findOne({ email: req.email })
-            console.log(userIdentified)
+            // console.log(userIdentified)
             let latestReceiptIndex = userIdentified.receiptArray.length
             let latestReceiptID = userIdentified.receiptArray[latestReceiptIndex - 1]
-            console.log(latestReceiptID)
+            // console.log(latestReceiptID)
 
             const receiptData = await itemModel.find(
                 {
