@@ -98,12 +98,8 @@ module.exports = {
             user = await userModel.findOne({ email: validatedParams.email })
         } catch (err) {
             res.statusCode = 500 //interal server error
-            return res.json(err)
-        }
-
-        if(!user) {
-            res.statusCode = 400 //bad request
             return res.json({
+                err, 
                 success: false, 
                 message: 'Given email or password is incorrect'
             })
