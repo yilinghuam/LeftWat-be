@@ -8,24 +8,26 @@ const mongoURI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${
 //data 
 let data = [
     {
-        email: 'abc@hotmail.com',
-        hashedValue: 'abaubfq3i4btiqh4bfiqbfibq3igbjevbr9ubvadjvbaiebrfi',
+        email: 'abc12345@hotmail.com',
+        hashedValue: '$2b$10$NHtxyCuo/BfhNkM4GtZiv.qyjMIr9Ohsd/gbrOR/S5m4CCdUpJi72',
+        cloudinaryReceipts: ['test0@test.com', 'test1@test.com', 'test2@test.com', 'test3@test.com'],
+        receiptArray: [202107240, 202107241, 202107242, 202107243]
     },
     {
         email: 'abcdef@hotmail.com',
-        hashedValue: 'abaubfq3i4btiqh4bfiqbfibq3igbjevbr9ubvadjvbaiebrfi',
+        hashedValue: '$2b$10$NHtxyCuo/BfhNkM4GtZiv.qyjMIr9Ohsd/gbrOR/S5m4CCdUpJi72',
     },
     {
         email: 'abcdefghi@hotmail.com',
-        hashedValue: 'abaubfq3i4btiqh4bfiqbfibq3igbjevbr9ubvadjvbaiebrfi',
+        hashedValue: '$2b$10$NHtxyCuo/BfhNkM4GtZiv.qyjMIr9Ohsd/gbrOR/S5m4CCdUpJi72',
     },
     {
         email: 'abc123@hotmail.com',
-        hashedValue: 'abaubfq3i4btiqh4bfiqbfibq3igbjevbr9ubvadjvbaiebrfi',
+        hashedValue: '$2b$10$NHtxyCuo/BfhNkM4GtZiv.qyjMIr9Ohsd/gbrOR/S5m4CCdUpJi72',
     },
     {
         email: 'abc456@hotmail.com',
-        hashedValue: 'abaubfq3i4btiqh4bfiqbfibq3igbjevbr9ubvadjvbaiebrfi',
+        hashedValue: '$2b$10$NHtxyCuo/BfhNkM4GtZiv.qyjMIr9Ohsd/gbrOR/S5m4CCdUpJi72',
     },
 ]
 

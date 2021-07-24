@@ -12,7 +12,7 @@ let data = [
             email: 'abc12345@hotmail.com',
             profileType: 'public'
         },
-        receiptID: 2021070712345,
+        receiptID: 202107240,
         itemName: "Apple",
         itemCategory: "Others",
         itemPrice: 1,
@@ -20,13 +20,14 @@ let data = [
         itemQuantityAtUpload: 12,
         itemQuantityUpdatedByUser: 12,
         deletedByUser: false,
+        cloudinaryLink: 'test@test.com'
     },
     {
         userID: { 
             email: 'abc12345@hotmail.com',
             profileType: 'public'
         },        
-        receiptID: 2021070712346,
+        receiptID: 202107240,
         itemName: "Pear",
         itemCategory: "Others",
         itemPrice: 3,
@@ -40,7 +41,7 @@ let data = [
             email: 'abc12345@hotmail.com',
             profileType: 'public'
         },
-        receiptID: 2021070712347,
+        receiptID: 202107240,
         itemName: "Chips",
         itemCategory: "Others",
         itemPrice: 5,
@@ -54,7 +55,7 @@ let data = [
             email: 'abc12345@hotmail.com',
             profileType: 'public'
         },
-        receiptID: 2021070712348,
+        receiptID: 202107241,
         itemName: "Spinach",
         itemCategory: "Others",
         itemPrice: 3,
@@ -68,7 +69,7 @@ let data = [
             email: 'abc12345@hotmail.com',
             profileType: 'public'
         },
-        receiptID: 2021070712349,
+        receiptID: 202107241,
         itemName: "Milk",
         itemCategory: "Others",
         itemPrice: 8,
