@@ -172,20 +172,20 @@ module.exports = {
             // if value is edited by user, FRONTEND data supercedes BACKEND data, else leave BACKEND data as-is
             if(toBeChangedItemKeys.includes('itemPrice')) {
                 toBeChangedItemPrice = requestedData[toBeChangedItem].itemPrice
-                console.log('ItemPrice has been changed to ' + toBeChangedItemPrice)
+                // console.log('ItemPrice has been changed to ' + toBeChangedItemPrice)
             }
             if(toBeChangedItemKeys.includes('itemQuantityUpdatedByUser')) {
                 toBeChangedItemQuantity = requestedData[toBeChangedItem].itemQuantityUpdatedByUser
-                console.log('Quantity has been changed to ' + toBeChangedItemQuantity)
+                // console.log('Quantity has been changed to ' + toBeChangedItemQuantity)
             }
             if(toBeChangedItemKeys.includes('itemPriceTotal')) {
                 toBeChangedItemPriceTotal = requestedData[toBeChangedItem].itemPriceTotal
-                console.log('Total price has been changed to ' + toBeChangedItemPriceTotal)
+                // console.log('Total price has been changed to ' + toBeChangedItemPriceTotal)
             }
 
             try {
                 const updatedProduct = await itemModel.findOneAndUpdate(
-                    { itemName: toBeChangedItem }, // to correspond to form field name
+                    { itemName: toBeChangedItem },
                     {
                         itemPrice: toBeChangedItemPrice,
                         itemQuantityUpdatedByUser: toBeChangedItemQuantity,
