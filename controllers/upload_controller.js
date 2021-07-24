@@ -104,7 +104,7 @@ module.exports = {
         
     },
 
-    loadReceipt: async (req,res) => {
+    loadReceipt: async (req, res) => {
         
         try {
 
@@ -133,60 +133,75 @@ module.exports = {
 
     confirmReceipt: async (req, res) => {
 
-        // add filter based on user ID
+        // hardcoded FRONTEND data
+        let exampleFrontendData = {
+            'Dr Oetker Ristorante Formaggi Pizza - Frozen': {
+                itemName: 'Dr Oetker Ristorante Formaggi Pizza - Frozen',
+                itemPrice: 4,
+                itemQuantityUpdatedByUser: 4,
+                itemPriceTotal: 16
+            },
+        }
 
-        // let requestData = req.body.headers.itemChangeState
-        // let changedData = Object.keys(requestData) 
+        let requestedData = exampleFrontendData // req.body.headers.itemChangeState
+        let toBeChangedData = Object.keys(requestedData) // returns array of strings 'itemA' and 'itemB'
 
-        // for (let i = 0; i < changedData.length; i++) {
-        //     let changedItem = changedData[i]
+        // loop through every 'item' string in the array
+        for (let i = 0; i < toBeChangedData.length; i++) {
 
-        //     const originalData = await itemModel.findOne({slug:changedItem})
+            // one grocery product; string = itemName
+            let toBeChangedItem = toBeChangedData[i]
 
-        //     let changedItemCategory = originalData.itemCategory
-        //     let changedItemQuantity = originalData.itemQuantityUpdatedByUser
-        //     let changedDeleted = originalData.deletedByUser
+            // FROM BACKEND
+            // originalData = object in mongoDB
+            const originalData = await itemModel.findOne({ itemName: toBeChangedItem })
 
-        //     const changedDataKeys = Object.keys(requestData[changedItem])
+            // first take the original values from mongoDB backend
+            let toBeChangedItemPrice = originalData.itemPrice
+            // console.log('ItemPrice is originally ' + toBeChangedItemPrice)
+            let toBeChangedItemQuantity = originalData.itemQuantityUpdatedByUser
+            // console.log('Quantity is originally ' + toBeChangedItemQuantity)
+            let toBeChangedItemPriceTotal = originalData.itemPriceTotal
+            // console.log('Total price is originally ' + toBeChangedItemPriceTotal)
+
+            // FROM FRONTEND
+            // returns keys of a specific grocery product as an array of strings
+            const toBeChangedItemKeys = Object.keys(requestedData[toBeChangedItem]) // 'itemName' 'itemPrice' etc.
+
+            // now take the edited values from React frontend
+            // if value is edited by user, FRONTEND data supercedes BACKEND data, else leave BACKEND data as-is
+            if(toBeChangedItemKeys.includes('itemPrice')) {
+                toBeChangedItemPrice = requestedData[toBeChangedItem].itemPrice
+                console.log('ItemPrice has been changed to ' + toBeChangedItemPrice)
+            }
+            if(toBeChangedItemKeys.includes('itemQuantityUpdatedByUser')) {
+                toBeChangedItemQuantity = requestedData[toBeChangedItem].itemQuantityUpdatedByUser
+                console.log('Quantity has been changed to ' + toBeChangedItemQuantity)
+            }
+            if(toBeChangedItemKeys.includes('itemPriceTotal')) {
+                toBeChangedItemPriceTotal = requestedData[toBeChangedItem].itemPriceTotal
+                console.log('Total price has been changed to ' + toBeChangedItemPriceTotal)
+            }
+
+            try {
+                const updatedProduct = await itemModel.findOneAndUpdate(
+                    { itemName: toBeChangedItem }, // to correspond to form field name
+                    {
+                        itemPrice: toBeChangedItemPrice,
+                        itemQuantityUpdatedByUser: toBeChangedItemQuantity,
+                        itemPriceTotal: toBeChangedItemPriceTotal,
+                    },
+                    { new: true }
+                )
+
+                console.log(updatedProduct)
+            } catch (err) {
+                console.log(err)
+            }
             
-        //     if(changedDataKeys.includes('itemCategory')) {
-        //         changedItemCategory = exampleData[changedItem].itemCategory
-        //     }
-        //     if(changedDataKeys.includes('itemQuantityUpdatedByUser')) {
-        //         changedItemQuantity = exampleData[changedItem].itemQuantityUpdatedByUser
-        //     }
-        //     if(changedDataKeys.includes('deletedByUser')) {
-        //         changedDeleted = exampleData[changedItem].deletedByUser
-        //     }
+        }
 
-        //     try {
-        //         const updatedProduct = await itemModel.findOneAndUpdate(
-        //             {slug:changedItem}, 
-        //             {itemCategory: changedItemCategory,
-        //             itemQuantityUpdatedByUser: changedItemQuantity,
-        //             deletedByUser: changedDeleted
-        //             },
-        //             {options: {
-        //                 new:true
-        //             }})
-        //         console.log(updatedProduct)
-        //     } catch (error) {
-        //         console.log(error)
-        //     }
-
-        //     {
-        //         apple: {
-        //             itemPriceTotal: 24, 
-        //             itemPrice: “2”
-        //             }
-        //         chips: {
-        //             itemPriceTotal: 8, 
-        //             itemQuantityUpdatedByUser: “4"
-        //             }
-        //     }
-        //     basically, three possible changes, itemPriceTotal, itemPrice and itemQuantityUpdatedByUser.
-        //     itemPriceTotal will always change cause changing any of the other two will always affect total price
-        // }
+        res.json('Receipt data updated successfully!')
 
     },
 }
