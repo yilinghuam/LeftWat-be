@@ -8,4 +8,7 @@ const {
 // retrieve dashboard user data
 router.get('/', authenticatedOnlyMiddleware, dashboardController.dashboard)
 
+// change password
+router.patch('/changepassword', authenticatedOnlyMiddleware, dashboardController.changePassword)
+
 module.exports = router
