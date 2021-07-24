@@ -26,7 +26,7 @@ module.exports = {
 
         const validationResult = changePasswordValidator.validate(req.body)
         if(validationResult.error) {
-            res.status = 400 //bad request
+            res.status(400) //bad request
             return res.json(validationResult.error)
         }
 
@@ -34,7 +34,7 @@ module.exports = {
 
         //ensure re-entered new password matches new password
         if(validatedParams.newPassword !== validatedParams.reEnterNewPassword) {
-            res.status = 400 //bad request
+            res.status(400) //bad request
             return res.json({
                 success: false,
                 message: 'Passwords do not match'
@@ -47,13 +47,13 @@ module.exports = {
         try {
             hash = await bcrypt.hash(validatedParams.newPassword, 10)
         } catch (err) {
-            res.status = 500 //internal server error
+            res.status(500) //internal server error
             console.log(err)
             return res.json()
         }
 
         if(hash === '') {
-            res.status = 500 //internal server error
+            res.status(500) //internal server error
             return res.json({
                 success: false,
                 message: 'Hash not found'
@@ -77,7 +77,7 @@ module.exports = {
             })
         } catch (err) {
             console.log(err)
-            res.status = 500 //internal server error
+            res.status(500) //internal server error
             res.json(err)
         }
     },
