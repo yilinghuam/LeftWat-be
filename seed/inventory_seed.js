@@ -8,7 +8,10 @@ const mongoURI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${
 //data 
 let data = [
     {
-        userID: ["user1", "public"],
+        userID: { 
+            email: 'abc12345@hotmail.com',
+            profileType: 'public'
+        },
         receiptID: 2021070712345,
         itemName: "Apple",
         itemCategory: "Others",
@@ -16,10 +19,13 @@ let data = [
         itemPriceTotal: 12,
         itemQuantityAtUpload: 12,
         itemQuantityUpdatedByUser: 12,
-        deletedByUser: true,
+        deletedByUser: false,
     },
     {
-        userID: ["user1", "public"],
+        userID: { 
+            email: 'abc12345@hotmail.com',
+            profileType: 'public'
+        },        
         receiptID: 2021070712346,
         itemName: "Pear",
         itemCategory: "Others",
@@ -30,7 +36,10 @@ let data = [
         deletedByUser: false,
     },
     {
-        userID: ["user1", "public"],
+        userID: { 
+            email: 'abc12345@hotmail.com',
+            profileType: 'public'
+        },
         receiptID: 2021070712347,
         itemName: "Chips",
         itemCategory: "Others",
@@ -41,7 +50,10 @@ let data = [
         deletedByUser: false,
     },
     {
-        userID: ["user1", "public"],
+        userID: { 
+            email: 'abc12345@hotmail.com',
+            profileType: 'public'
+        },
         receiptID: 2021070712348,
         itemName: "Spinach",
         itemCategory: "Others",
@@ -52,7 +64,10 @@ let data = [
         deletedByUser: false,
     },
     {
-        userID: ["user1", "public"],
+        userID: { 
+            email: 'abc12345@hotmail.com',
+            profileType: 'public'
+        },
         receiptID: 2021070712349,
         itemName: "Milk",
         itemCategory: "Others",

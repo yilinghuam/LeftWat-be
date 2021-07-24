@@ -1,26 +1,38 @@
 const mongoose = require('mongoose')
 const { userModel } = require('../models/User')
+const { itemModel } = require('../models/Item')
 const { changePasswordValidator } = require('../validations/dashboard_validators')
 const bcrypt = require('bcrypt')
 const moment = require('moment')
 const jwt = require('jsonwebtoken')
 
+
 module.exports = {
-    dashboard: async (req, res) => {
-        //get user info     
+    userData: async (req, res) => {
+        //get user info & receipts   
         try {
-            userInfo = await userModel.findOne({ email: req.email })
+            userInfo = await userModel.findOne({ 'email': req.email })
+            userReceipts = await itemModel.find({ 'userID.email': req.email })
 
             return res.json({ 
                 success: true,
                 message: 'User found',
                 userInfo,
+                userReceipts,
             })
         } catch (err) {
             res.status(500) //internal server error
-            return res.json(err)
+            res.json(err)
         }
     },
+
+// } catch (err) {
+//     res.status(500) //internal server error
+//     return res.json(err)
+// }
+
+// //get user's receipts
+// try {
 
     changePassword: async (req, res) => {
 
@@ -62,7 +74,7 @@ module.exports = {
 
         //update new password in database
         try {
-            userInfo = await userModel.updateOne(
+            await userModel.updateOne(
                 { email: req.email },
                 {
                     $set: {
