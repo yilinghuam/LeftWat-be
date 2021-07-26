@@ -8,18 +8,14 @@ const jwt = require('jsonwebtoken')
 module.exports = {
     index: async(req,res) => {
 
-        // retrieve emailidentification from jwt token first and receiptID based on email
+        // retrieve emailidentification from jwt token first
         let user = jwt.verify(req.headers.user,process.env.JWT_SECRET)
-        console.log(user)
 
-        let receiptID = [202107240]
-        // retrieve 5 most recent receipt data that is not deleted
         try {
             const productData = await itemModel.find(
                 {
-                    'userID.email':user, 
+                    'userID.email':user.email, 
                     deletedByUser:false, 
-                    receiptID: {$in:receiptID}
                 })
             // need to include 5 most recent receipt data  that 
             return res.json(productData)
@@ -36,11 +32,16 @@ module.exports = {
 
         let requestData = req.body.headers.itemChangeState
         let changedData = Object.keys(requestData) 
+        let user = jwt.verify(req.body.headers.user,process.env.JWT_SECRET)
+
 
         for (let i = 0; i < changedData.length; i++) {
             let changedItem = changedData[i]
 
-            const originalData = await itemModel.findOne({slug:changedItem})
+            const originalData = await itemModel.findOne(
+                {'userID.email':user.email,
+                deletedByUser:false, 
+                slug:changedItem})
 
             let changedItemCategory = originalData.itemCategory
             let changedItemQuantity = originalData.itemQuantityUpdatedByUser
@@ -60,7 +61,9 @@ module.exports = {
 
             try {
                 const updatedProduct = await itemModel.findOneAndUpdate(
-                    {slug:changedItem}, 
+                    {'userID.email':user.email,
+                    deletedByUser:false, 
+                    slug:changedItem}, 
                     {itemCategory: changedItemCategory,
                     itemQuantityUpdatedByUser: changedItemQuantity,
                     deletedByUser: changedDeleted
