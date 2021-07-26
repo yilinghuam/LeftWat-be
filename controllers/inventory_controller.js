@@ -3,12 +3,15 @@ const _ = require('lodash')
 const moment = require('moment')
 const mongoose = require('mongoose')
 const { itemModel } = require('../models/Item')
+const jwt = require('jsonwebtoken')
 
 module.exports = {
     index: async(req,res) => {
 
         // retrieve emailidentification from jwt token first and receiptID based on email
-        let user = req.headers.user
+        let user = jwt.verify(req.headers.user,process.env.JWT_SECRET)
+        console.log(user)
+
         let receiptID = [2021070712345,2021070712346,2021070712347,2021070712348,2021070712349]
         // retrieve 5 most recent receipt data that is not deleted
         try {
