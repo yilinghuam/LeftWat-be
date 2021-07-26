@@ -30,9 +30,9 @@ module.exports = {
 
         // add filter based on user ID
 
-        let requestData = req.body.headers.itemChangeState
+        let requestData = req.body
         let changedData = Object.keys(requestData) 
-        let user = jwt.verify(req.body.headers.user,process.env.JWT_SECRET)
+        let user = jwt.verify(req.headers.user,process.env.JWT_SECRET)
 
         try {
             for (let i = 0; i < changedData.length; i++) {
