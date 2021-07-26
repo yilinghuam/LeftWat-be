@@ -12,7 +12,7 @@ module.exports = {
         let user = jwt.verify(req.headers.user,process.env.JWT_SECRET)
         console.log(user)
 
-        let receiptID = [2021070712345,2021070712346,2021070712347,2021070712348,2021070712349]
+        let receiptID = [202107240]
         // retrieve 5 most recent receipt data that is not deleted
         try {
             const productData = await itemModel.find(
