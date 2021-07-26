@@ -34,32 +34,32 @@ module.exports = {
         let changedData = Object.keys(requestData) 
         let user = jwt.verify(req.body.headers.user,process.env.JWT_SECRET)
 
+        try {
+            for (let i = 0; i < changedData.length; i++) {
+                let changedItem = changedData[i]
 
-        for (let i = 0; i < changedData.length; i++) {
-            let changedItem = changedData[i]
+                const originalData = await itemModel.findOne(
+                    {'userID.email':user.email,
+                    deletedByUser:false, 
+                    slug:changedItem})
 
-            const originalData = await itemModel.findOne(
-                {'userID.email':user.email,
-                deletedByUser:false, 
-                slug:changedItem})
+                let changedItemCategory = originalData.itemCategory
+                let changedItemQuantity = originalData.itemQuantityUpdatedByUser
+                let changedDeleted = originalData.deletedByUser
 
-            let changedItemCategory = originalData.itemCategory
-            let changedItemQuantity = originalData.itemQuantityUpdatedByUser
-            let changedDeleted = originalData.deletedByUser
+                const changedDataKeys = Object.keys(requestData[changedItem])
+                
+                if(changedDataKeys.includes('itemCategory')) {
+                    changedItemCategory = requestData[changedItem].itemCategory
+                }
+                if(changedDataKeys.includes('itemQuantityUpdatedByUser')) {
+                    changedItemQuantity = requestData[changedItem].itemQuantityUpdatedByUser
+                }
+                if(changedDataKeys.includes('deletedByUser')) {
+                    changedDeleted = requestData[changedItem].deletedByUser
+                }
 
-            const changedDataKeys = Object.keys(requestData[changedItem])
             
-            if(changedDataKeys.includes('itemCategory')) {
-                changedItemCategory = exampleData[changedItem].itemCategory
-            }
-            if(changedDataKeys.includes('itemQuantityUpdatedByUser')) {
-                changedItemQuantity = exampleData[changedItem].itemQuantityUpdatedByUser
-            }
-            if(changedDataKeys.includes('deletedByUser')) {
-                changedDeleted = exampleData[changedItem].deletedByUser
-            }
-
-            try {
                 const updatedProduct = await itemModel.findOneAndUpdate(
                     {'userID.email':user.email,
                     deletedByUser:false, 
@@ -72,10 +72,9 @@ module.exports = {
                         new:true
                     }})
                 console.log(updatedProduct)
-            } catch (error) {
-                console.log(error)
-            }       
-        }
-  
+            }
+        } catch (error) {
+            console.log(error)
+        }  
     }
 }
