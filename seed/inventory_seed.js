@@ -20,7 +20,6 @@ let data = [
         itemQuantityAtUpload: 12,
         itemQuantityUpdatedByUser: 12,
         deletedByUser: false,
-        cloudinaryLink: 'test@test.com'
     },
     {
         userID: { 

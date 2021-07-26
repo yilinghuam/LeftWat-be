@@ -58,7 +58,6 @@ module.exports = {
                 if(changedDataKeys.includes('deletedByUser')) {
                     changedDeleted = requestData[changedItem].deletedByUser
                 }
-
             
                 const updatedProduct = await itemModel.findOneAndUpdate(
                     {'userID.email':user.email,
@@ -72,9 +71,11 @@ module.exports = {
                         new:true
                     }})
                 console.log(updatedProduct)
+                return res.json()
             }
         } catch (error) {
             console.log(error)
+            return res.json(error)
         }  
     }
 }

@@ -151,4 +151,20 @@ module.exports = {
             res.status(500) //internal server error
         }
     },
+    retrieveCategories: async(req,res) => {
+        let user = jwt.verify(req.headers.user,process.env.JWT_SECRET)
+
+        try {
+            const productData = await itemModel.find(
+                {
+                    'userID.email':user.email, 
+                    deletedByUser:false, 
+                })
+            return res.json(productData)
+        } catch (error) {
+            res.statusCode = 400
+            console.log(error)
+            return res.json(error)
+        }
+    }
 }
