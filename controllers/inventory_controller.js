@@ -17,7 +17,7 @@ module.exports = {
         try {
             const productData = await itemModel.find(
                 {
-                    userID:user, 
+                    'userID.email':user, 
                     deletedByUser:false, 
                     receiptID: {$in:receiptID}
                 })
