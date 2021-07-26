@@ -25,6 +25,7 @@ module.exports = {
             return res.json(productData)
         } catch (error) {
             res.statusCode = 400
+            console.log(error)
             return res.json(error)
         }
 
