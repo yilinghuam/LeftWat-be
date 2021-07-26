@@ -53,6 +53,6 @@ router.post('/', authenticatedOnlyMiddleware, uploadReceiptParser.single('receip
 router.get('/confirm', authenticatedOnlyMiddleware, uploadController.loadReceipt)
 
 // confirm route to push edits to mongoDB
-router.post('/confirm', authenticatedOnlyMiddleware, uploadController.confirmReceipt)
+router.patch('/confirm', authenticatedOnlyMiddleware, uploadController.confirmReceipt)
 
 module.exports = router
