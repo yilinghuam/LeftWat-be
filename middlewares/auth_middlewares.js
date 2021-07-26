@@ -4,9 +4,11 @@ module.exports = {
 
     authenticatedOnly: (req, res, next) => {
         //check if token exists
-        const token = req.cookies.access_token
+        const token = req.headers.auth_token
+        console.log(token)
         if(!token) {
-            return res.status(403) //forbidden
+            res.statusCode = 403 //forbidden
+            return res.json()
 
         }
 
@@ -14,9 +16,12 @@ module.exports = {
         try {
             const data = jwt.verify(token, process.env.JWT_SECRET)
             req.email = data.email
+            console.log(data)
+            console.log(req.email)
             return next()
         } catch {
-            return res.status(403) //forbidden
+            res.statusCode = 403 //forbidden
+            return res.json()
         }
     }
 

@@ -18,7 +18,6 @@ const itemSchema = new mongoose.Schema({
     itemQuantityUpdatedByUser: { type: Number, required: true },
     deletedByUser: { type: Boolean, default: false },
     slug: { type: String },
-    cloudinaryLink: { type: String },
     }, { timestamps: { createdAt: true, updatedAt: true } })
 
 const itemModel = mongoose.model('item', itemSchema)

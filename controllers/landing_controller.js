@@ -35,7 +35,7 @@ module.exports = {
         } catch (err) {
             res.statusCode = 500 //internal server error
             console.log(err)
-            return res.json()
+            return res.json(err)
         }
 
         if(hash === '') {
