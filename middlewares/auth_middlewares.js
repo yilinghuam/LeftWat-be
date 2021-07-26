@@ -7,7 +7,8 @@ module.exports = {
         const token = req.headers.auth_token
         console.log(token)
         if(!token) {
-            return res.status(403) //forbidden
+            res.statusCode = 403 //forbidden
+            return res.json()
 
         }
 
@@ -19,7 +20,8 @@ module.exports = {
             console.log(req.email)
             return next()
         } catch {
-            return res.status(403) //forbidden
+            res.statusCode = 403 //forbidden
+            return res.json()
         }
     }
 
