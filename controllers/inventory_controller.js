@@ -29,8 +29,7 @@ module.exports = {
     update: async(req,res) => {
 
         // add filter based on user ID
-        console.log(req.body)
-        let requestData = req.body
+        let requestData = req.body.itemChangeState
         let changedData = Object.keys(requestData) 
         let user = jwt.verify(req.headers.user,process.env.JWT_SECRET)
         try {
