@@ -3,9 +3,9 @@ const jwt = require('jsonwebtoken')
 module.exports = {
 
     authenticatedOnly: (req, res, next) => {
-        console.log(req)
         //check if token exists
         const token = req.headers.auth_token
+        console.log(token)
         if(!token) {
             return res.status(403) //forbidden
 
@@ -15,6 +15,8 @@ module.exports = {
         try {
             const data = jwt.verify(token, process.env.JWT_SECRET)
             req.email = data.email
+            console.log(data)
+            console.log(req.email)
             return next()
         } catch {
             return res.status(403) //forbidden
