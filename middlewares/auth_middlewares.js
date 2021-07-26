@@ -14,7 +14,7 @@ module.exports = {
         //verify token
         try {
             const data = jwt.verify(token, process.env.JWT_SECRET)
-            req.email = data.email
+            // req.email = data.email
             return next()
         } catch {
             return res.status(403) //forbidden
