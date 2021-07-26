@@ -153,6 +153,7 @@ module.exports = {
     },
     retrievePieData: async(req,res) => {
         let user = jwt.verify(req.headers.user,process.env.JWT_SECRET)
+        console.log(req.email)
 
         try {
             const productData = await itemModel.find(
