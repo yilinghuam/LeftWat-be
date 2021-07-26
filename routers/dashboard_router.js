@@ -14,5 +14,5 @@ router.patch('/changepassword', authenticatedOnlyMiddleware, dashboardController
 // delete receipt from history page
 router.delete('/delete-receipt', authenticatedOnlyMiddleware, dashboardController.deleteReceipt)
 
-router.get('/pieData',authenticatedOnlyMiddleware,dashboardContorller.retrievePieData)
+router.get('/pieData',authenticatedOnlyMiddleware,dashboardController.retrievePieData)
 module.exports = router

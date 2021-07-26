@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 module.exports = {
 
     authenticatedOnly: (req, res, next) => {
+        console.log(req)
         //check if token exists
         const token = req.cookies.access_token
         if(!token) {
