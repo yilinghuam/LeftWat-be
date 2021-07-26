@@ -151,7 +151,7 @@ module.exports = {
             res.status(500) //internal server error
         }
     },
-    retrieveCategories: async(req,res) => {
+    retrievePieData: async(req,res) => {
         let user = jwt.verify(req.headers.user,process.env.JWT_SECRET)
 
         try {
@@ -160,7 +160,14 @@ module.exports = {
                     'userID.email':user.email, 
                     deletedByUser:false, 
                 })
-            return res.json(productData)
+            const meatData = productData.filter(elem => elem.itemCategory === 'Meat').length
+            const vegetableData = productData.filter(elem => elem.itemCategory === 'Vegetable').length
+            const otherData = productData.filter(elem => elem.itemCategory === 'Others').length
+            return res.json(
+                {   meat:meatData,
+                    vegetable:vegetableData,
+                    others:otherData
+                })
         } catch (error) {
             res.statusCode = 400
             console.log(error)
