@@ -135,10 +135,7 @@ module.exports = {
     confirmReceipt: async (req, res) => {
 
         let requestedData = req.body.itemChangeState // req.body.headers.itemChangeState
-        let toBeChangedData = Object.keys(requestedData) // returns array of strings 'itemA' and 'itemB'
-        console.log(requestedData)
-        console.log(req.headers)
-        console.log(req.headers.receiptID)
+        let toBeChangedData = Object.keys(requestedData) // returns array of strings 'itemA' and 'itemB'       
 
         try {
         // loop through every 'item' string in the array
@@ -149,8 +146,8 @@ module.exports = {
 
                 // FROM BACKEND
                 // originalData = object in mongoDB
-                const originalData = await itemModel.findOne({ slug: toBeChangedItem, receiptID: req.headers.receiptID })
-
+                const originalData = await itemModel.findOne({ slug: toBeChangedItem, receiptID: req.headers.receiptid })
+                console.log(originalData)
                 // first take the original values from mongoDB backend
                 let toBeChangedItemPrice = originalData.itemPrice
                 // console.log('ItemPrice is originally ' + toBeChangedItemPrice)
