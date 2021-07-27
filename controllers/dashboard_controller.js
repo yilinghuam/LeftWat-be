@@ -114,7 +114,7 @@ module.exports = {
 
         //delete all items of receipt
         try {
-            await itemModel.deleteMany({ receiptID: req.body.receiptID })
+            await itemModel.deleteMany({ receiptID: req.headers.receiptid })
 
         } catch (err) {
             res.status(500) //internal server error
@@ -129,7 +129,7 @@ module.exports = {
 
             //delete receiptID from receiptArray
             for (let receiptIndex = 0; receiptIndex < userReceipts.length; receiptIndex++) {
-                if(userReceipts[receiptIndex] === req.body.receiptID ) {
+                if(userReceipts[receiptIndex] === req.headers.receiptid ) {
                     userReceipts.splice(receiptIndex, 1)
                 }   
             }
@@ -151,6 +151,7 @@ module.exports = {
             res.status(500) //internal server error
         }
     },
+
     retrievePieData: async(req,res) => {
         let user = jwt.verify(req.headers.user,process.env.JWT_SECRET)
         console.log(req.email)
