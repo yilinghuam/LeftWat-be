@@ -32,7 +32,7 @@ module.exports = {
 
         // path for upload feature for user (POSTMAN)
         const file_path = await req.file.path
-
+        console.log(file_path)
         // 2. Click UPLOAD button
         // 2a) Run OCR API and return json data
         let veryfi_client = new Client(client_id, client_secret, username, api_key)
@@ -44,7 +44,7 @@ module.exports = {
         // process_document() for local files
 
         let response = await veryfi_client.process_document_url(file_path, [], true)
-
+        console.log(response)
         let receiptID = moment(timestampNow).format('YYYYMMDD') + '-' + randomstring.generate(5)
 
         try {
