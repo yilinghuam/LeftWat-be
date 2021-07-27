@@ -136,7 +136,11 @@ module.exports = {
 
         let requestedData = req.body.itemChangeState // req.body.headers.itemChangeState
         let toBeChangedData = Object.keys(requestedData) // returns array of strings 'itemA' and 'itemB'       
-
+        
+        if (toBeChangedData.length === 0) {
+            return res.json()
+        }
+        
         try {
         // loop through every 'item' string in the array
             for (let i = 0; i < toBeChangedData.length; i++) {
