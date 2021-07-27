@@ -30,6 +30,7 @@ module.exports = {
 
         // add filter based on user ID
         let requestData = req.body.itemChangeState
+        console.log(requestData)
         let changedData = Object.keys(requestData) 
         let user = jwt.verify(req.headers.user,process.env.JWT_SECRET)
         try {
@@ -38,7 +39,7 @@ module.exports = {
 
                 const originalData = await itemModel.findOne(
                     {'userID.email':user.email,
-                    receiptID: requestData[changedItem]['receiptID'],
+                    receiptID: requestData[changedItem].receiptID,
                     deletedByUser:false, 
                     slug:changedItem})
 
@@ -60,7 +61,7 @@ module.exports = {
             
                 const updatedProduct = await itemModel.findOneAndUpdate(
                     {'userID.email':user.email,
-                    receiptID: requestData[changedItem]['receiptID'],
+                    receiptID: requestData[changedItem].receiptID,
                     deletedByUser:false, 
                     slug:changedItem}, 
                     {itemCategory: changedItemCategory,
