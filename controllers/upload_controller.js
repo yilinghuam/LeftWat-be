@@ -96,7 +96,7 @@ module.exports = {
             }
         )
             .then(pushCloudinaryResp => {
-                return res.json(receiptID)
+                return 
             })
             .catch(err => {
                 console.log(err)
@@ -122,7 +122,7 @@ module.exports = {
             )
 
             console.log(receiptData)
-            return res.json(receiptData)
+            return res.json({receiptData:receiptData,latestReceiptID:latestReceiptID})
 
         } catch(err) {
             console.log(err)
