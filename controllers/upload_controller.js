@@ -145,7 +145,7 @@ module.exports = {
 
             // FROM BACKEND
             // originalData = object in mongoDB
-            const originalData = await itemModel.findOne({ itemName: toBeChangedItem, receiptID: req.body.receiptID })
+            const originalData = await itemModel.findOne({ slug: toBeChangedItem, receiptID: req.body.receiptID })
 
             // first take the original values from mongoDB backend
             let toBeChangedItemPrice = originalData.itemPrice
@@ -176,7 +176,7 @@ module.exports = {
 
             try {
                 const updatedProduct = await itemModel.findOneAndUpdate(
-                    { itemName: toBeChangedItem },
+                    { slug: toBeChangedItem , receiptID: req.body.receiptID },
                     {
                         itemPrice: toBeChangedItemPrice,
                         itemQuantityUpdatedByUser: toBeChangedItemQuantity,
@@ -192,7 +192,7 @@ module.exports = {
             
         }
 
-        res.json('Receipt data updated successfully!')
+        return res.json('Receipt data updated successfully!')
 
     },
 }
