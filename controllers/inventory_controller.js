@@ -38,6 +38,7 @@ module.exports = {
 
                 const originalData = await itemModel.findOne(
                     {'userID.email':user.email,
+                    receiptID: requestData[changedItem]['receiptID'],
                     deletedByUser:false, 
                     slug:changedItem})
 
@@ -59,6 +60,7 @@ module.exports = {
             
                 const updatedProduct = await itemModel.findOneAndUpdate(
                     {'userID.email':user.email,
+                    receiptID: requestData[changedItem]['receiptID'],
                     deletedByUser:false, 
                     slug:changedItem}, 
                     {itemCategory: changedItemCategory,
