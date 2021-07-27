@@ -95,7 +95,7 @@ module.exports = {
             }
         )
             .then(pushCloudinaryResp => {
-                return
+                return res.json(receiptID)
             })
             .catch(err => {
                 console.log(err)
