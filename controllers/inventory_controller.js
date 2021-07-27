@@ -72,8 +72,9 @@ module.exports = {
                         new:true
                     }})
                 console.log(updatedProduct)
-                return res.json()
             }
+            return res.json()
+
         } catch (error) {
             console.log(error)
             return res.json(error)
