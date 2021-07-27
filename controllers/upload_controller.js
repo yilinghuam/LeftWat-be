@@ -122,7 +122,7 @@ module.exports = {
             )
 
             console.log(receiptData)
-            return res.send(receiptData)
+            return res.json(receiptData)
 
         } catch(err) {
             console.log(err)
