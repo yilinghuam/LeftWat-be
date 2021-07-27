@@ -75,7 +75,7 @@ module.exports = {
                 console.log('Successful MongoDB insertion!')
             }
 
-            res.json({ message: "uploaded!" })
+            res.json({ message: "uploaded!",receiptID:receiptID })
 
         } catch (err) {
             console.log(err)
