@@ -177,7 +177,7 @@ module.exports = {
 
                 
                     const updatedProduct = await itemModel.findOneAndUpdate(
-                        { slug: toBeChangedItem , receiptID: req.body.receiptID },
+                        { slug: toBeChangedItem , receiptID: req.body.receiptid },
                         {
                             itemPrice: toBeChangedItemPrice,
                             itemQuantityUpdatedByUser: toBeChangedItemQuantity,
