@@ -32,7 +32,8 @@ module.exports = {
 
         // path for upload feature for user (POSTMAN)
         const file_path = await req.file.path
-
+        console.log(req)
+        console.log('uploadcontroller reached')
         // 2. Click UPLOAD button
         // 2a) Run OCR API and return json data
         let veryfi_client = new Client(client_id, client_secret, username, api_key)
@@ -44,7 +45,7 @@ module.exports = {
         // process_document() for local files
 
         let response = await veryfi_client.process_document_url(file_path, [], true)
-
+        console.log('veryfi working')
         let receiptID = moment(timestampNow).format('YYYYMMDD') + '-' + randomstring.generate(5)
 
         try {
@@ -74,7 +75,7 @@ module.exports = {
                 console.log('Successful MongoDB insertion!')
             }
 
-            res.json({ message: "uploaded!" })
+            res.json({ message: "uploaded!",receiptID:receiptID })
 
         } catch (err) {
             console.log(err)
@@ -95,7 +96,7 @@ module.exports = {
             }
         )
             .then(pushCloudinaryResp => {
-                return
+                return 
             })
             .catch(err => {
                 console.log(err)
@@ -121,7 +122,7 @@ module.exports = {
             )
 
             console.log(receiptData)
-            return res.send(receiptData)
+            return res.json({receiptData:receiptData,latestReceiptID:latestReceiptID})
 
         } catch(err) {
             console.log(err)
@@ -133,75 +134,74 @@ module.exports = {
 
     confirmReceipt: async (req, res) => {
 
-        // hardcoded FRONTEND data
-        let exampleFrontendData = {
-            'Dr Oetker Ristorante Formaggi Pizza - Frozen': {
-                itemName: 'Dr Oetker Ristorante Formaggi Pizza - Frozen',
-                itemPrice: 4,
-                itemQuantityUpdatedByUser: 4,
-                itemPriceTotal: 16
-            },
+        let requestedData = req.body.itemChangeState // req.body.headers.itemChangeState
+        let toBeChangedData = Object.keys(requestedData) // returns array of strings 'itemA' and 'itemB'       
+        
+        if (toBeChangedData.length === 0) {
+            return res.json()
         }
-
-        let requestedData = exampleFrontendData // req.body.headers.itemChangeState
-        let toBeChangedData = Object.keys(requestedData) // returns array of strings 'itemA' and 'itemB'
-
+        
+        try {
         // loop through every 'item' string in the array
-        for (let i = 0; i < toBeChangedData.length; i++) {
+            for (let i = 0; i < toBeChangedData.length; i++) {
 
-            // one grocery product; string = itemName
-            let toBeChangedItem = toBeChangedData[i]
+                // one grocery product; string = itemName
+                let toBeChangedItem = toBeChangedData[i]
 
-            // FROM BACKEND
-            // originalData = object in mongoDB
-            const originalData = await itemModel.findOne({ itemName: toBeChangedItem })
+                // FROM BACKEND
+                // originalData = object in mongoDB
+                const originalData = await itemModel.findOne({ slug: toBeChangedItem, receiptID: req.headers.receiptid })
+                console.log(originalData)
+                // first take the original values from mongoDB backend
+                let toBeChangedItemPrice = originalData.itemPrice
+                // console.log('ItemPrice is originally ' + toBeChangedItemPrice)
+                let toBeChangedItemQuantity = originalData.itemQuantityUpdatedByUser
+                // console.log('Quantity is originally ' + toBeChangedItemQuantity)
+                let toBeChangedItemPriceTotal = originalData.itemPriceTotal
+                // console.log('Total price is originally ' + toBeChangedItemPriceTotal)
 
-            // first take the original values from mongoDB backend
-            let toBeChangedItemPrice = originalData.itemPrice
-            // console.log('ItemPrice is originally ' + toBeChangedItemPrice)
-            let toBeChangedItemQuantity = originalData.itemQuantityUpdatedByUser
-            // console.log('Quantity is originally ' + toBeChangedItemQuantity)
-            let toBeChangedItemPriceTotal = originalData.itemPriceTotal
-            // console.log('Total price is originally ' + toBeChangedItemPriceTotal)
+                // FROM FRONTEND
+                // returns keys of a specific grocery product as an array of strings
+                const toBeChangedItemKeys = Object.keys(requestedData[toBeChangedItem]) // 'itemName' 'itemPrice' etc.
 
-            // FROM FRONTEND
-            // returns keys of a specific grocery product as an array of strings
-            const toBeChangedItemKeys = Object.keys(requestedData[toBeChangedItem]) // 'itemName' 'itemPrice' etc.
+                // now take the edited values from React frontend
+                // if value is edited by user, FRONTEND data supercedes BACKEND data, else leave BACKEND data as-is
+                if(toBeChangedItemKeys.includes('itemPrice')) {
+                    toBeChangedItemPrice = requestedData[toBeChangedItem].itemPrice
+                    // console.log('ItemPrice has been changed to ' + toBeChangedItemPrice)
+                }
+                if(toBeChangedItemKeys.includes('itemQuantityUpdatedByUser')) {
+                    toBeChangedItemQuantity = requestedData[toBeChangedItem].itemQuantityUpdatedByUser
+                    // console.log('Quantity has been changed to ' + toBeChangedItemQuantity)
+                }
+                if(toBeChangedItemKeys.includes('itemPriceTotal')) {
+                    toBeChangedItemPriceTotal = requestedData[toBeChangedItem].itemPriceTotal
+                    // console.log('Total price has been changed to ' + toBeChangedItemPriceTotal)
+                }
 
-            // now take the edited values from React frontend
-            // if value is edited by user, FRONTEND data supercedes BACKEND data, else leave BACKEND data as-is
-            if(toBeChangedItemKeys.includes('itemPrice')) {
-                toBeChangedItemPrice = requestedData[toBeChangedItem].itemPrice
-                // console.log('ItemPrice has been changed to ' + toBeChangedItemPrice)
+                
+                    const updatedProduct = await itemModel.findOneAndUpdate(
+                        { slug: toBeChangedItem , receiptID: req.headers.receiptid },
+                        {
+                            itemPrice: toBeChangedItemPrice,
+                            itemQuantityUpdatedByUser: toBeChangedItemQuantity,
+                            itemPriceTotal: toBeChangedItemPriceTotal,
+                        },
+                        {options: {
+                            new:true
+                        }}
+                    )
+
+                    console.log(updatedProduct)
+                    return res.json('Receipt data updated successfully!')
+
+                
             }
-            if(toBeChangedItemKeys.includes('itemQuantityUpdatedByUser')) {
-                toBeChangedItemQuantity = requestedData[toBeChangedItem].itemQuantityUpdatedByUser
-                // console.log('Quantity has been changed to ' + toBeChangedItemQuantity)
-            }
-            if(toBeChangedItemKeys.includes('itemPriceTotal')) {
-                toBeChangedItemPriceTotal = requestedData[toBeChangedItem].itemPriceTotal
-                // console.log('Total price has been changed to ' + toBeChangedItemPriceTotal)
-            }
 
-            try {
-                const updatedProduct = await itemModel.findOneAndUpdate(
-                    { itemName: toBeChangedItem },
-                    {
-                        itemPrice: toBeChangedItemPrice,
-                        itemQuantityUpdatedByUser: toBeChangedItemQuantity,
-                        itemPriceTotal: toBeChangedItemPriceTotal,
-                    },
-                    { new: true }
-                )
-
-                console.log(updatedProduct)
-            } catch (err) {
-                console.log(err)
-            }
-            
+        } catch (err) {
+            console.log(err)
         }
 
-        res.json('Receipt data updated successfully!')
 
     },
 }
