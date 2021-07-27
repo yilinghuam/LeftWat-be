@@ -134,17 +134,7 @@ module.exports = {
 
     confirmReceipt: async (req, res) => {
 
-        // hardcoded FRONTEND data
-        let exampleFrontendData = {
-            'Dr Oetker Ristorante Formaggi Pizza - Frozen': {
-                itemName: 'Dr Oetker Ristorante Formaggi Pizza - Frozen',
-                itemPrice: 4,
-                itemQuantityUpdatedByUser: 4,
-                itemPriceTotal: 16
-            },
-        }
-
-        let requestedData = exampleFrontendData // req.body.headers.itemChangeState
+        let requestedData = req.body.itemChangeState // req.body.headers.itemChangeState
         let toBeChangedData = Object.keys(requestedData) // returns array of strings 'itemA' and 'itemB'
 
         // loop through every 'item' string in the array
@@ -155,7 +145,7 @@ module.exports = {
 
             // FROM BACKEND
             // originalData = object in mongoDB
-            const originalData = await itemModel.findOne({ itemName: toBeChangedItem })
+            const originalData = await itemModel.findOne({ itemName: toBeChangedItem, receiptID: req.body.receiptID })
 
             // first take the original values from mongoDB backend
             let toBeChangedItemPrice = originalData.itemPrice
