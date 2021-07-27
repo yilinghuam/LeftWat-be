@@ -183,7 +183,9 @@ module.exports = {
                             itemQuantityUpdatedByUser: toBeChangedItemQuantity,
                             itemPriceTotal: toBeChangedItemPriceTotal,
                         },
-                        { new: true }
+                        {options: {
+                            new:true
+                        }}
                     )
 
                     console.log(updatedProduct)
