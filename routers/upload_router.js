@@ -47,7 +47,7 @@ cloudinary.config({
 // --> MULTER ROUTE FOR LOCAL STORAGE
 // router.post('/upload', upload.single('testReceipt'), itemController.uploadReceipt)
 // --> MULTER-STORAGE-CLOUDINARY ROUTE FOR CLOUDINARY STORAGE
-router.post('/', authenticatedOnlyMiddleware, uploadReceiptParser.single('receipt'), uploadController.uploadReceipt)
+router.post('/', authenticatedOnlyMiddleware, uploadReceiptParser.single('img'), uploadController.uploadReceipt)
 
 // get route to retrieve data for user to edit and confirm
 router.get('/confirm', authenticatedOnlyMiddleware, uploadController.loadReceipt)
