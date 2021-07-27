@@ -138,61 +138,64 @@ module.exports = {
         let toBeChangedData = Object.keys(requestedData) // returns array of strings 'itemA' and 'itemB'
         console.log(requestedData)
         console.log(req.body.receiptID)
+
+        try {
         // loop through every 'item' string in the array
-        for (let i = 0; i < toBeChangedData.length; i++) {
+            for (let i = 0; i < toBeChangedData.length; i++) {
 
-            // one grocery product; string = itemName
-            let toBeChangedItem = toBeChangedData[i]
+                // one grocery product; string = itemName
+                let toBeChangedItem = toBeChangedData[i]
 
-            // FROM BACKEND
-            // originalData = object in mongoDB
-            const originalData = await itemModel.findOne({ slug: toBeChangedItem, receiptID: req.body.receiptID })
+                // FROM BACKEND
+                // originalData = object in mongoDB
+                const originalData = await itemModel.findOne({ slug: toBeChangedItem, receiptID: req.body.receiptID })
 
-            // first take the original values from mongoDB backend
-            let toBeChangedItemPrice = originalData.itemPrice
-            // console.log('ItemPrice is originally ' + toBeChangedItemPrice)
-            let toBeChangedItemQuantity = originalData.itemQuantityUpdatedByUser
-            // console.log('Quantity is originally ' + toBeChangedItemQuantity)
-            let toBeChangedItemPriceTotal = originalData.itemPriceTotal
-            // console.log('Total price is originally ' + toBeChangedItemPriceTotal)
+                // first take the original values from mongoDB backend
+                let toBeChangedItemPrice = originalData.itemPrice
+                // console.log('ItemPrice is originally ' + toBeChangedItemPrice)
+                let toBeChangedItemQuantity = originalData.itemQuantityUpdatedByUser
+                // console.log('Quantity is originally ' + toBeChangedItemQuantity)
+                let toBeChangedItemPriceTotal = originalData.itemPriceTotal
+                // console.log('Total price is originally ' + toBeChangedItemPriceTotal)
 
-            // FROM FRONTEND
-            // returns keys of a specific grocery product as an array of strings
-            const toBeChangedItemKeys = Object.keys(requestedData[toBeChangedItem]) // 'itemName' 'itemPrice' etc.
+                // FROM FRONTEND
+                // returns keys of a specific grocery product as an array of strings
+                const toBeChangedItemKeys = Object.keys(requestedData[toBeChangedItem]) // 'itemName' 'itemPrice' etc.
 
-            // now take the edited values from React frontend
-            // if value is edited by user, FRONTEND data supercedes BACKEND data, else leave BACKEND data as-is
-            if(toBeChangedItemKeys.includes('itemPrice')) {
-                toBeChangedItemPrice = requestedData[toBeChangedItem].itemPrice
-                // console.log('ItemPrice has been changed to ' + toBeChangedItemPrice)
+                // now take the edited values from React frontend
+                // if value is edited by user, FRONTEND data supercedes BACKEND data, else leave BACKEND data as-is
+                if(toBeChangedItemKeys.includes('itemPrice')) {
+                    toBeChangedItemPrice = requestedData[toBeChangedItem].itemPrice
+                    // console.log('ItemPrice has been changed to ' + toBeChangedItemPrice)
+                }
+                if(toBeChangedItemKeys.includes('itemQuantityUpdatedByUser')) {
+                    toBeChangedItemQuantity = requestedData[toBeChangedItem].itemQuantityUpdatedByUser
+                    // console.log('Quantity has been changed to ' + toBeChangedItemQuantity)
+                }
+                if(toBeChangedItemKeys.includes('itemPriceTotal')) {
+                    toBeChangedItemPriceTotal = requestedData[toBeChangedItem].itemPriceTotal
+                    // console.log('Total price has been changed to ' + toBeChangedItemPriceTotal)
+                }
+
+                
+                    const updatedProduct = await itemModel.findOneAndUpdate(
+                        { slug: toBeChangedItem , receiptID: req.body.receiptID },
+                        {
+                            itemPrice: toBeChangedItemPrice,
+                            itemQuantityUpdatedByUser: toBeChangedItemQuantity,
+                            itemPriceTotal: toBeChangedItemPriceTotal,
+                        },
+                        { new: true }
+                    )
+
+                    console.log(updatedProduct)
+                    return res.json('Receipt data updated successfully!')
+
+                
             }
-            if(toBeChangedItemKeys.includes('itemQuantityUpdatedByUser')) {
-                toBeChangedItemQuantity = requestedData[toBeChangedItem].itemQuantityUpdatedByUser
-                // console.log('Quantity has been changed to ' + toBeChangedItemQuantity)
-            }
-            if(toBeChangedItemKeys.includes('itemPriceTotal')) {
-                toBeChangedItemPriceTotal = requestedData[toBeChangedItem].itemPriceTotal
-                // console.log('Total price has been changed to ' + toBeChangedItemPriceTotal)
-            }
 
-            try {
-                const updatedProduct = await itemModel.findOneAndUpdate(
-                    { slug: toBeChangedItem , receiptID: req.body.receiptID },
-                    {
-                        itemPrice: toBeChangedItemPrice,
-                        itemQuantityUpdatedByUser: toBeChangedItemQuantity,
-                        itemPriceTotal: toBeChangedItemPriceTotal,
-                    },
-                    { new: true }
-                )
-
-                console.log(updatedProduct)
-                return res.json('Receipt data updated successfully!')
-
-            } catch (err) {
-                console.log(err)
-            }
-            
+        } catch (err) {
+            console.log(err)
         }
 
 
