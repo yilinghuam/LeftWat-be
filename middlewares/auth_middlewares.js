@@ -4,7 +4,7 @@ module.exports = {
 
     authenticatedOnly: (req, res, next) => {
         //check if token exists
-        const token = req.headers.auth_token
+        const token = req.cookies.access_token
         console.log(token)
         if(!token) {
             res.statusCode = 403 //forbidden
