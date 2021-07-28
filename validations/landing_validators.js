@@ -18,5 +18,15 @@ module.exports = {
             .required(),
         password: Joi.string()
             .required()
+    }),
+
+    resetPasswordValidator: Joi.object({
+        email: Joi.string()
+            .email()
+            .required(),
+        token: Joi.string()
+            .required(),
+        new_password: Joi.string()
+            .required()
     })
 }
