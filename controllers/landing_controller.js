@@ -204,6 +204,8 @@ module.exports = {
                 }
             )
 
+            console.log(oneTimeToken)
+
             const msg = {
                 to: req.body.email,
                 from: 'p.yingxin@gmail.com',
@@ -232,8 +234,8 @@ module.exports = {
 
     resetPasswordForm: async (req, res) => {
         
-        //find user in db
         try {
+             //find user in db
             let user = await userModel.findOne({ email: req.params.id })
 
             //if user does not exist in db, redirect to login page
@@ -243,12 +245,13 @@ module.exports = {
                 return
             }
 
-            //decode one-time token using hashedValue and created date
+            //decode/verify one-time token using hashedValue and created date
+            //if password was already reset, will return err: { name: "JsonWebTokenError", message: "invalid signature" }
             let createdTime = user.createdAt
 
             let secretKey = user.hashedValue + '-' + createdTime
 
-            let payload = jwt.decode(req.params.token, secretKey)
+            let payload = jwt.verify(req.params.token, secretKey)
 
             //temporary reset password form that hides email and token
             //to add page in frontend
@@ -270,12 +273,12 @@ module.exports = {
 
         let payload = ''
         
-        //decode payload 
+        //decode/verify payload 
         try {
             let user = await userModel.findOne({ email: req.body.email })
             
             let secretKey = user.hashedValue + '-' + user.createdTime
-            payload = jwt.decode(req.body.token, secretKey)
+            payload = jwt.verify(req.body.token, secretKey)
         } catch (err) {
             res.status(400) //bad request
             res.json(err)
