@@ -208,7 +208,7 @@ module.exports = {
                 to: req.body.email,
                 from: 'p.yingxin@gmail.com',
                 subject: 'Reset your LeftWat password',
-                html: `<a href="api/v1/landing/reset-password/${user.email}/${oneTimeToken}">Reset password</a>`,
+                html: `<a href="http://localhost:7000/api/v1/landing/reset-password/${user.email}/${oneTimeToken}">Reset password</a>`,
             }
 
             sendgrid
@@ -270,6 +270,7 @@ module.exports = {
 
         let payload = ''
         
+        //decode payload 
         try {
             let user = await userModel.findOne({ email: req.body.email })
             
