@@ -47,9 +47,9 @@ For frontend, we started with coming up with the visual layouts first, followed 
 
 ## Wireframe Samples
 
-![Landing Page and Signup](/public/image/landing.png "Landing Page and Signup")
-![Inventory Page](/public/image/inventory.png "Inventory Page")
-![Price Comparison Page](/public/image/price_comparison.png "Price Comparison Page")
+![Landing Page and Signup](/public/images/landing.png "Landing Page and Signup")
+![Inventory Page](/public/images/inventory.png "Inventory Page")
+![Price Comparison Page](/public/images/price_comparison.png "Price Comparison Page")
 
 ## Unsolved Problems
 
