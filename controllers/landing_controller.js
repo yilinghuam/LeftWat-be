@@ -205,10 +205,11 @@ module.exports = {
             )
 
             console.log(oneTimeToken)
+            console.log(req.body.email)
 
             const msg = {
                 to: req.body.email,
-                from: 'p.yingxin@gmail.com',
+                from: 'leftwat.tablefive@gmail.com',
                 subject: 'Reset your LeftWat password',
                 text: `Reset your email at http://localhost:7000/api/v1/landing/reset-password/${user.email}/${oneTimeToken}`,
                 html: `<p>You have requested to reset your LeftWat password. </br>
@@ -225,7 +226,6 @@ module.exports = {
                 })
 
             res.json({
-                message: 'sendgrid email is working!',
                 oneTimeToken
             })
         } catch (err) {
@@ -274,13 +274,19 @@ module.exports = {
     resetPasswordAction: async (req, res) => {
 
         let payload = ''
-        
+
         //decode/verify payload 
         try {
             let user = await userModel.findOne({ email: req.body.email })
-            
-            let secretKey = user.hashedValue + '-' + user.createdTime
+
+            //decode/verify one-time token using hashedValue and created date
+            //if password was already reset, will return err: { name: "JsonWebTokenError", message: "invalid signature" }
+            let createdTime = user.createdAt
+
+            let secretKey = user.hashedValue + '-' + createdTime
+
             payload = jwt.verify(req.body.token, secretKey)
+
         } catch (err) {
             res.status(400) //bad request
             res.json(err)
