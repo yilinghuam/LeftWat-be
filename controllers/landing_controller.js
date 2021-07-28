@@ -210,7 +210,9 @@ module.exports = {
                 to: req.body.email,
                 from: 'p.yingxin@gmail.com',
                 subject: 'Reset your LeftWat password',
-                html: `<a href="http://localhost:7000/api/v1/landing/reset-password/${user.email}/${oneTimeToken}">Reset password</a>`,
+                text: `Reset your email at http://localhost:7000/api/v1/landing/reset-password/${user.email}/${oneTimeToken}`,
+                html: `<p>You have requested to reset your LeftWat password. </br>
+                    Reset your password here: <a href="http://localhost:7000/api/v1/landing/reset-password/${user.email}/${oneTimeToken}">Reset password</a></p>`,
             }
 
             sendgrid
@@ -223,7 +225,7 @@ module.exports = {
                 })
 
             res.json({
-                message: 'reset password working',
+                message: 'sendgrid email is working!',
                 oneTimeToken
             })
         } catch (err) {
