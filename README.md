@@ -14,26 +14,26 @@ LeftWat is a web-based app designed to help users keep track of their grocery pu
 ## Technologies Used
 
 ### Wireframe:
-Adobe XD: [Wireframe](https://xd.adobe.com/view/1595919e-f524-4992-9739-8eec2f6d9486-40c6/)
-Trello for project tasks and timeline tracking
+- Adobe XD: [Wireframe](https://xd.adobe.com/view/1595919e-f524-4992-9739-8eec2f6d9486-40c6/)
+- Trello for project tasks and timeline tracking
 
 ### Frontend:
-ReactJS - JavaScript library for building user interfaces
-Materialize CSS - Responsive CSS framework
-ChartJS - Display simple and engaging JavaScript charts
-React-toastify - Add notifications in app
-Axios - Promise-based HTTP Client for browser and NodeJS
-Google fonts - Library of fonts
+- ReactJS - JavaScript library for building user interfaces
+- Materialize CSS - Responsive CSS framework
+- ChartJS - Display simple and engaging JavaScript charts
+- React-toastify - Add notifications in app
+- Axios - Promise-based HTTP Client for browser and NodeJS
+- Google fonts - Library of fonts
 
 ### Backend:
-Veryfi OCR API - Optical Character Recognition tool to read receipts
-ExpressJS - Web application framework for NodeJS
-MongoDB - Database to store JSON-like documents with dynamic schema
-NodeJS - Open-source and cross-platform JavaScript runtime environment
-Cloudinary - Cloud storage of uploaded images
-Multer - NodeJS middleware to handle file uploads
-bcrypt - Password hashing function
-JWT - Standard for conveying some data between backend and frontend applications
+- Veryfi OCR API - Optical Character Recognition tool to read receipts
+- ExpressJS - Web application framework for NodeJS
+- MongoDB - Database to store JSON-like documents with dynamic schema
+- NodeJS - Open-source and cross-platform JavaScript runtime environment
+- Cloudinary - Cloud storage of uploaded images
+- Multer - NodeJS middleware to handle file uploads
+- bcrypt - Password hashing function
+- JWT - Standard for conveying some data between backend and frontend applications
 
 ## Approach Taken
 
@@ -68,14 +68,14 @@ _“As a parent, I would want to keep track of all my spendings in groceries so 
 
 _“When I purchase groceries, I want to be able to have an overview of my fridge’s inventory so that I know which items need to be replenished.”_
 
-| Blockers (what problem we are trying to solve)                                                                                                                          | Function to remove Blockers                                                                                                                                               |   |   |   |
-|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---|---|---|
-| I have no idea what’s in my fridge                                                                                                                                      | Inventory page that shows all items currently in the fridge                                                                                                               |   |   |   |
-| I have no idea how to keep track of what’s in my fridge                                                                                                                 | Database that stores information of all grocery items purchased; Inventory page allows users to delete items from inventory whenever needed (e.g. eaten, thrown, expired) |   |   |   |
-| It’s tedious to record items one by one                                                                                                                                 | Upload image of receipt and app will automatically generate the discrete items purchased                                                                                  |   |   |   |
-| I have no idea what I bought on my last grocery run                                                                                                                     | History page displays images of the last 5 receipts                                                                                                                       |   |   |   |
-| I don’t have a record of the price changes for the items I usually buy; I want to know that I’m purchasing an item at a good price                                      | Price comparison feature allows user to compare historical prices by showing them a chart of item price by transaction date                                               |   |   |   |
-| I’m not sure what kind of items I usually buy for consumption; knowing general food categories will help me understand my buying pattern, and better plan my diet needs | Dashboard shows user a pie chart of the item spread over three categories, ‘Meat’, ‘Vegetables’, and ‘Others’                                                             |   |   |   |
+| Blockers (what problem we are trying to solve)                                                                                                                          | Function to remove Blockers                                                                                                                                               |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| I have no idea what’s in my fridge                                                                                                                                      | Inventory page that shows all items currently in the fridge                                                                                                               |
+| I have no idea how to keep track of what’s in my fridge                                                                                                                 | Database that stores information of all grocery items purchased; Inventory page allows users to delete items from inventory whenever needed (e.g. eaten, thrown, expired) |
+| It’s tedious to record items one by one                                                                                                                                 | Upload image of receipt and app will automatically generate the discrete items purchased                                                                                  |
+| I have no idea what I bought on my last grocery run                                                                                                                     | History page displays images of the last 5 receipts                                                                                                                       |
+| I don’t have a record of the price changes for the items I usually buy; I want to know that I’m purchasing an item at a good price                                      | Price comparison feature allows user to compare historical prices by showing them a chart of item price by transaction date                                               |
+| I’m not sure what kind of items I usually buy for consumption; knowing general food categories will help me understand my buying pattern, and better plan my diet needs | Dashboard shows user a pie chart of the item spread over three categories, ‘Meat’, ‘Vegetables’, and ‘Others’                                                             |
 
 
 ## Routes
@@ -95,6 +95,3 @@ _“When I purchase groceries, I want to be able to have an overview of my fridg
 |                 	|           	|             	|                                                                                  	|
 |                 	|           	|             	|                                                                                  	|
 |                 	|           	|             	|                                                                                  	|
-
-
-
