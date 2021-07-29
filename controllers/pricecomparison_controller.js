@@ -12,7 +12,11 @@ module.exports = {
             const listData = await itemModel.find({},'itemName -_id').exec()
             // need to include 5 most recent receipt data  that 
             console.log(listData)
-            return res.json(listData)
+            let newlist = new Set()
+            listData.map(elem => newlist.add(elem.itemName))
+            newlist = Array.from(newlist)
+            console.log(newlist)
+            return res.json(newlist)
         } catch (error) {
             res.statusCode = 400
             console.log(error)
