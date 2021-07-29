@@ -31,7 +31,6 @@ module.exports = {
                 {$match:{'userID.email':req.email,slug:item}},
                 {$group:{
                     _id:"$slug",
-                    itemName: "$itemName",
                     itemPrice: {$push: "$itemPrice"},
                     maxPrice: {$max: "$itemPrice"},
                     minPrice: {$min:"$itemPrice"},
@@ -46,7 +45,6 @@ module.exports = {
                 {$match:{slug:item}},
                 {$group:{
                     _id:"$slug",
-                    itemName: "$itemName",
                     itemPrice: {$push: "$itemPrice"},
                     maxPrice: {$max: "$itemPrice"},
                     minPrice: {$min:"$itemPrice"},
@@ -60,6 +58,7 @@ module.exports = {
             
             return res.json(
                 {
+                    itemName:req.headers.query,
                     individual:itemData,
                     all:allItemData
                 })
