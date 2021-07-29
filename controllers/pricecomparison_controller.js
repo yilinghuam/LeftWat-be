@@ -22,6 +22,19 @@ module.exports = {
             console.log(error)
             return res.json(error)
         }
+    },
 
+    show: async(req,res) => {
+        let item = _.kebabCase(req.headers.query)
+        try {
+            const itemData = await itemModel.find({'userID.email':req.email,slug:item})
+            // need to include 5 most recent receipt data  that 
+            console.log(itemData)
+            return res.json(itemData)
+        } catch (error) {
+            res.statusCode = 400
+            console.log(error)
+            return res.json(error)
+        }
     }
 }
