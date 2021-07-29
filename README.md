@@ -80,18 +80,19 @@ _“When I purchase groceries, I want to be able to have an overview of my fridg
 
 ## Routes
 
-| Main            	| Routes    	| HTTP Method 	| Description                                                                      	|
-|-----------------	|-----------	|-------------	|----------------------------------------------------------------------------------	|
-| /api/v1/landing 	| /register 	| `POST`      	| Register user account                                                            	|
-|                 	| /login    	| `POST`      	| User login                                                                       	|
-|                 	| /logout   	| `POST`      	| User logout                                                                      	|
-| /api/v1/upload  	| /         	| `POST`      	| Upload receipt to Cloudinary, parse to Veryfi OCR, and save JSON data to MongoDB 	|
-|                 	| /confirm  	| `GET`       	| Retrieve data for user to edit and confirm uploaded receipt                      	|
-|                 	|           	| `PATCH`     	| User logout                                                                      	|
-|                 	|           	|             	|                                                                                  	|
-|                 	|           	|             	|                                                                                  	|
-|                 	|           	|             	|                                                                                  	|
-|                 	|           	|             	|                                                                                  	|
-|                 	|           	|             	|                                                                                  	|
-|                 	|           	|             	|                                                                                  	|
-|                 	|           	|             	|                                                                                  	|
+| Main                    | Routes          | HTTP Method   | Description                                                                      |
+|-------------------------|-----------------|:-------------:|----------------------------------------------------------------------------------|
+| /api/v1/landing         | /register       | `POST`        | Register user account                                                            |
+|                         | /login          | `POST`        | User login                                                                       |
+|                         | /logout         | `POST`        | User logout                                                                      |
+| /api/v1/upload          | /               | `POST`        | Upload receipt to Cloudinary, parse to Veryfi OCR, and save JSON data to MongoDB |
+|                         | /confirm        | `GET`         | Retrieve data for user to edit and confirm uploaded receipt                      |
+|                         | /confirm        | `PATCH`       | User logout                                                                      |
+| /api/v1/inventory       | /               | `GET`         |  Retrieve data from inventory                                                    |
+|                         | /               | `PATCH`       | Update changes made in database                                                  |
+| /api/v1/dashboard       | /               | `GET`         | Retrieve user data                                                               |
+|                         | /changepassword | `PATCH`       | Update change of password in database                                            |
+|                         | /delete-receipt | `DELETE`      | Delete receipt from history page                                                 |
+|                         | /pieData        | `GET`         | Retrieve items' data                                                             |
+| /api/v1/pricecomparison | /               | `GET`         | Retrieve items' data                                                             |
+|                         | /search         | `GET`         | Filter and show items' data                                                      |
