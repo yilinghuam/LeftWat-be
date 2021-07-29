@@ -9,7 +9,7 @@ module.exports = {
     index: async(req,res) => {
 
         try {
-            const listData = await itemModel.find({},'itemName').exec()
+            const listData = await itemModel.find({},'itemName -_id').exec()
             // need to include 5 most recent receipt data  that 
             console.log(listData)
             return res.json(listData)
