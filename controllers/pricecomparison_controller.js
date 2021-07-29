@@ -8,9 +8,6 @@ const jwt = require('jsonwebtoken')
 module.exports = {
     index: async(req,res) => {
 
-        // retrieve emailidentification from jwt token first
-        let user = jwt.verify(req.headers.user,process.env.JWT_SECRET)
-
         try {
             const listData = await itemModel.find({},
                 {userID: 0,
