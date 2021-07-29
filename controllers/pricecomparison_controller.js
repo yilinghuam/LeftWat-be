@@ -41,12 +41,26 @@ module.exports = {
                 console.log(result);
                 console.log(err)
           })
-            // const allItemData = await itemModel.find({slug:item})
-            // need to include 5 most recent receipt data  that 
-            console.log(itemData)
-            // itemName,itemPrice,createdAt
+            const allItemData = await itemModel.aggregate([
+                {$match:{slug:item}},
+                {$group:{
+                    _id:"$slug",
+                    itemPrice: {$push: "$itemPrice"},
+                    maxPrice: {$max: "$itemPrice"},
+                    minPrice: {$min:"$itemPrice"},
+                    averagePrice: {$avg:"$itemPrice"},
+                    itemLabel: {$push: {$dateToString: {format:"%Y-%m-%d", date:"$createdAt"}}}
+                }}
+            ],function(err, result) {
+                console.log(result);
+                console.log(err)
+          })
             
-            return res.json(itemData)
+            return res.json(
+                {
+                    individual:itemData,
+                    all:allItemData
+                })
         } catch (error) {
             res.statusCode = 400
             console.log(error)
