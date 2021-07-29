@@ -10,7 +10,7 @@ const uploadRouter = require('./routers/upload_router')
 const landingRouter = require('./routers/landing_router')
 const inventoryRouter = require('./routers/inventory_router')
 const dashboardRouter = require('./routers/dashboard_router')
-
+const pricecomparisonRouter = require('./routers/pricecomparison_router')
 // =======================
 //      HOST
 // =======================
@@ -37,6 +37,7 @@ app.use('/api/v1/upload', uploadRouter)
 app.use('/api/v1/landing', landingRouter)
 app.use('/api/v1/inventory',inventoryRouter)
 app.use('/api/v1/dashboard',dashboardRouter)
+app.use('/api/v1/pricecomparison',pricecomparisonRouter)
 
 mongoose.connect( mongoURI, { useNewUrlParser: true, useUnifiedTopology: true } )
   .then(response => {
