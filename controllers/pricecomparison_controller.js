@@ -34,7 +34,7 @@ module.exports = {
                     itemPrice: {$push: "$itemPrice"},
                     maxPrice: {$max: "$itemPrice"},
                     minPrice: {$min:"$itemPrice"},
-                    averagePrice: {$avg:"$itemPrice"}
+                    averagePrice: {$avg:"$itemPrice"},
                     itemLabel: {$push: {$dateToString: {format:"%Y-%m-%d", date:"$createdAt"}}}
                 }}
             ])
