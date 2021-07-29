@@ -29,14 +29,14 @@ module.exports = {
         try {
             const itemData = await itemModel.aggregate([
                 {$match:{'userID.email':req.email,slug:item}},
-                {$group:{
-                    slug:item,
-                    itemPrice: {$push: "$itemPrice"},
-                    maxPrice: {$max: "$itemPrice"},
-                    minPrice: {$min:"$itemPrice"},
-                    averagePrice: {$avg:"$itemPrice"},
-                    itemLabel: {$push: {$dateToString: {format:"%Y-%m-%d", date:"$createdAt"}}}
-                }}
+                // {$group:{
+                //     slug:item,
+                //     itemPrice: {$push: "$itemPrice"},
+                //     maxPrice: {$max: "$itemPrice"},
+                //     minPrice: {$min:"$itemPrice"},
+                //     averagePrice: {$avg:"$itemPrice"},
+                //     itemLabel: {$push: {$dateToString: {format:"%Y-%m-%d", date:"$createdAt"}}}
+                // }}
             ])
             // const allItemData = await itemModel.find({slug:item})
             // need to include 5 most recent receipt data  that 
