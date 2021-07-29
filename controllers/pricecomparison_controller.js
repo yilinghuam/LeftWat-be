@@ -30,7 +30,7 @@ module.exports = {
             const itemData = await itemModel.aggregate([
                 {$match:{'userID.email':req.email,slug:item}},
                 {$group:{
-                    slug:item,
+                    _id:"$slug",
                     itemPrice: {$push: "$itemPrice"},
                     maxPrice: {$max: "$itemPrice"},
                     minPrice: {$min:"$itemPrice"},
