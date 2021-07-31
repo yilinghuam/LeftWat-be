@@ -53,7 +53,7 @@ For **frontend**, we started with coming up with the visual layouts first, follo
 
 ## Unsolved Problems
 
-- OCR API: We decided to focus on a single merchant template (i.e. RedMart) and did not try receipts/invoices from other merchants to see if the feature works across receipt/invoices types.
+- OCR API: We decided to focus on a single merchant template (i.e. RedMart) and did not try receipts/invoices from other merchants to see if the feature works across receipt/invoices types. **Update: works with Sheng Shiong
 - Security concerns regarding JWT practices and cookie storage/usage: Currently our login cookie is only stored in the frontend. However, as a better security measure, cookies should always be stored in both frontend and backend so that the system can compare and only authenticate users when frontend and backend cookies match.
 - We wanted to do single-page app but were unable to do so (due to the complexities), hence we proceeded with a multi-page app.
 - Forgot password route
